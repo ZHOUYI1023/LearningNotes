@@ -82,7 +82,7 @@ function add(x, y) {
   return x + y
 ```
 
-- [x] @mentions, #refs, [links](), **formatting**, and <del>tags</del> supported
+- [x] @mentions, #refs, [http://testwebsitelink.com/](), **formatting**, and <del>tags</del> supported
 - [x] list syntax required (any unordered or ordered list supported)
 - [x] this is a complete item
 - [ ] this is an incomplete item
@@ -108,7 +108,7 @@ Content in the first column | Content in the second column
 
 ---
 presentation:
-  width: 12800
+  width: 1280
   height: 720
 ---
 
@@ -130,3 +130,20 @@ a/(b+1)
 $
 
 $\sum_{1 < i\le j\ge n} x_{ij}$
+
+email: foo@bar.com
+
+[Click me!](http://test.com/)
+[Click me!](http://test.com/ "Link to Test.com")
+
+[Click this link][link1] for more info about it!
+[Also check out this link][foobar] if you want to.
+
+[link1]: http://test.com/ "Cool!"
+[foobar]: http://foobar.biz/ "Alright!"
+
+![This is the alt-attribute for my image](http://baidu.com/pic/doge.png "An optional title")
+
+![This is the alt-attribute.][myimage]
+
+[myimage]: /home/yi/Documents/LearningSeries/Font_2.PNG "if you need a title, it's here"
