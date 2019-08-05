@@ -25,7 +25,7 @@ ctrl-k v	Open preview to the Side
 
 ---
 
-我觉得你应该在这里使用 `<addr>` 才对。
+我觉得你应该在这里使用 `<addr>` 
 
 ```ruby
 require 'redcarpet'
@@ -87,9 +87,9 @@ function add(x, y) {
 - [x] this is a complete item
 - [ ] this is an incomplete item
 
-30^th^
+&ensp;&ensp;30^th^
 
-H~2~O
+&emsp;&emsp;H~2~O
 
 Content [^1]
 

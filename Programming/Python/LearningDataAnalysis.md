@@ -33,7 +33,7 @@ array([[5, 4],
 >>> a.sum()
 >>> a.min()
 >>> a.max()
-
+# In Numpy dimensions are called axes. The number of axes is rank.
 >>> b = np.arange(12).reshape(3,4)
 >>> b.sum(axis=0)                            # sum of each column
 >>> b.min(axis=1)                            # min of each row
