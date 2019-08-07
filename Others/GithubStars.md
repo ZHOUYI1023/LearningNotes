@@ -1,4 +1,6 @@
 ## Simulator
+[ROS](https://github.com/ros/ros)
+[ROS2](https://github.com/ros2/ros2)
 [AirSim](https://github.com/microsoft/AirSim)
 [Apollo](https://github.com/ApolloAuto/apollo)
 [Autoware](https://github.com/autowarefoundation/autoware)
@@ -91,6 +93,7 @@
 [Microsoft AI EDU](https://github.com/microsoft/ai-edu)
 [Andrew Ng Book](https://github.com/deeplearning-ai/machine-learning-yearning-cn)
 [Li Mu Book](https://github.com/d2l-ai/d2l-en)
+[Li Hongyi Course](https://github.com/datawhalechina/leeml-notes)
 [100 Days Of ML Code](https://github.com/Avik-Jain/100-Days-Of-ML-Code)
 [DL tutorial](https://github.com/zeusees/HyperDL-Tutorial)
 [Data Science](https://github.com/r0f1/datascience)
@@ -126,22 +129,81 @@
 ---
 
 ## Paper Collections
+[Reviews](https://github.com/ZHOUYI1023?after=Y3Vyc29yOjMw&q=AWESOME&tab=stars&utf8=%E2%9C%93)
+[Datasets](https://github.com/awesomedata/awesome-public-datasets)
+
+---
+
 [Machine Vision](https://github.com/Ewenwan/MVision)
-[Deep Learning Paper Reading Roadmap](https://github.com/floodsung/Deep-Learning-Papers-Reading-Roadmap)
-[GNN](https://github.com/thunlp/GNNPapers)
-[Multi-Agent Reinforcement Learning](https://github.com/LantaoYu/MARL-Papers)
+[Computer Vision](https://github.com/jbhuang0604/awesome-computer-vision)
+[Computer Vision](https://github.com/fregu856/papers)
+[Deep Vision](https://github.com/kjw0612/awesome-deep-vision)
+[Deep Learning](https://github.com/floodsung/Deep-Learning-Papers-Reading-Roadmap)
+[Graph NN](https://github.com/thunlp/GNNPapers)
+[Multi-Agent RL](https://github.com/LantaoYu/MARL-Papers)
+[Bayesian NN](https://github.com/ssydasheng/Bayesian_neural_network_papers)
+[Bayesian NN](https://github.com/mcgrady20150318/BayesianNeuralNetwork)
+[GAN](https://github.com/nightrome/really-awesome-gan)
+[Blockchains](https://github.com/openblockchains/awesome-blockchains)
+[Lane Detection](https://github.com/amusi/awesome-lane-detection)
+[Semantic Segmentation](https://github.com/mrgloom/awesome-semantic-segmentation)
+[Reinforcement Learning](https://github.com/aikorea/awesome-rl)
+[Motion Planning](https://github.com/AGV-IIT-KGP/awesome-motion-planning)
+
+[Pose Estimation](https://github.com/shawnyuen/PoseEstiPaperCollection)
+[NAS](https://github.com/D-X-Y/Awesome-NAS)
+[Anomaly Detection](https://github.com/hoya012/awesome-anomaly-detection)
+[Event-based Vision](https://github.com/uzh-rpg/event-based_vision_resources)
+
+
+---
+
+[Autonomous Driving](https://github.com/autonomousdrivingkr/Awesome-Autonomous-Driving)
+[Autonomous Driving](https://github.com/takeitallsource/awesome-autonomous-vehicles)
+[Autonomous Driving](https://github.com/DeepTecher/awesome-autonomous-vehicle)
+[Autonomous Driving](https://github.com/ZRZheng/Autonomous_Vehicle_Paper_Reading_List)
+
+---
+
+[Safety & Security](https://github.com/autoguard/awesome-vehicle-security-and-safety)
+[Embedded System](https://github.com/embedded-boston/awesome-embedded-systems)
+[Embedded System](https://github.com/nhivp/Awesome-Embedded)
+[Static Analysis](https://github.com/mre/awesome-static-analysis)
+
+---
+
+[SLAM](https://github.com/ahong007007/awesome-slam)
 [Recent SLAM](https://github.com/YiChenCityU/Recent_SLAM_Research)
+[SLAM Dataset](https://github.com/PaoPaoRobot/awesome-slam-datasets)
+[ROS2](https://github.com/fkromer/awesome-ros2)
+[VIO](https://github.com/PaoPaoRobot/Awesome-VIO)
+
+
+---
+
 [Neural Networks on Silicon](https://github.com/fengbintu/Neural-Networks-on-Silicon)
 [Embedded Neural Network](https://github.com/ZhishengWang/Embedded-Neural-Network)
-[Event-based Vision](https://github.com/uzh-rpg/event-based_vision_resources)
 [Model Compression](https://github.com/chester256/Model-Compression-Papers)
+[Model Compression](https://github.com/sun254/awesome-model-compression-and-acceleration)
 [Efficient DNN](https://github.com/MingSun-Tse/EfficientDNNs)
+[Embedded DL](https://github.com/EMDL/awesome-emdl)
+
+---
+
 [SysML](https://github.com/mcanini/SysML-reading-list)
-[Bayesian NN](https://github.com/ssydasheng/Bayesian_neural_network_papers)
-[Bayesian Neural Network](https://github.com/mcgrady20150318/BayesianNeuralNetwork)
-[Autonomous Vehicle](https://github.com/ZRZheng/Autonomous_Vehicle_Paper_Reading_List)
-[CV papers](https://github.com/fregu856/papers)
-[Pose Estimation](https://github.com/shawnyuen/PoseEstiPaperCollection)
+[System for ML](https://github.com/HuaizhengZhang/Awesome-System-for-Machine-Learning)
+[AI Infrastructures](https://github.com/1duo/awesome-ai-infrastructures)
+[AI Kubernetes](https://github.com/CognonicLabs/awesome-AI-kubernetes)
+[Distributed DL](https://github.com/bharathgs/Awesome-Distributed-Deep-Learning)
+[Production ML](https://github.com/EthicalML/awesome-production-machine-learning)
+
+---
+
+[Latex Drawing](https://github.com/xinychen/awesome-latex-drawing)
+[CV](https://github.com/posquit0/Awesome-CV)
+
+
+
 
 ## Code
 [Lite OS](https://github.com/LiteOS/LiteOS)
@@ -216,3 +278,4 @@
 [Gyro Allan](https://github.com/XinLiGH/GyroAllan)
 [loam back and forth](https://github.com/daobilige-su/loam_back_and_forth)
 [Super Resolution](https://github.com/IBM/MAX-Image-Resolution-Enhancer)
+[ORB SLAM2](https://github.com/PaoPaoRobot/ORB_SLAM2)

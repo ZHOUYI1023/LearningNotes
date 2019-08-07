@@ -81,4 +81,6 @@
 
 **新技术替代旧技术是不以人的意志为转移的，人生最幸运的事就是发现和顺应这个潮流。**
 
+**Management’s primary responsibility to create the illusion that a software company can be run by writing code, because that’s what programmers do. And while it would be great to have programmers who are also great at sales, graphic design, system administration, and cooking, it’s unrealistic. Like teaching a pig to sing, it wastes your time and it annoys the pig.**
+
 ****
