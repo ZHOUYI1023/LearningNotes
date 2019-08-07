@@ -74,7 +74,7 @@
 [OS Tutorial](https://github.com/cfenollosa/os-tutorial)
 [Learn OpenGL](https://github.com/LearnOpenGL-CN/LearnOpenGL-CN)
 [PyOpenGL](https://github.com/DrxMario/PyOpenGL-Tutorial)
-[PyOpenGL]((https://github.com/totex/PyOpenGL_tutorials)
+[PyOpenGL](https://github.com/totex/PyOpenGL_tutorials)
 [OpenCV Python](https://github.com/makelove/OpenCV-Python-Tutorial)
 [Python Testing](https://github.com/china-testing/python-api-tesing)
 [ROS for Beginners](https://github.com/DroidAITech/ROS-Academy-for-Beginners)
@@ -155,7 +155,6 @@
 [Semantic Segmentation](https://github.com/mrgloom/awesome-semantic-segmentation)
 [Reinforcement Learning](https://github.com/aikorea/awesome-rl)
 [Motion Planning](https://github.com/AGV-IIT-KGP/awesome-motion-planning)
-
 [Pose Estimation](https://github.com/shawnyuen/PoseEstiPaperCollection)
 [NAS](https://github.com/D-X-Y/Awesome-NAS)
 [Anomaly Detection](https://github.com/hoya012/awesome-anomaly-detection)
