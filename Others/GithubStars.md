@@ -13,6 +13,7 @@
 [TensorFlow](https://github.com/tensorflow/tensorflow)
 [Tensor Layer](https://github.com/tensorlayer/tensorlayer)
 [Model Optimization](https://github.com/tensorflow/model-optimization)
+[PyTorch](https://github.com/pytorch/pytorch)
 [ONNX](https://github.com/onnx/onnx-tensorflow)
 [OpenCV](https://github.com/opencv/opencv)
 [GluonCV](https://github.com/dmlc/gluon-cv)
@@ -31,6 +32,14 @@
 [FANN](https://github.com/libfann/fann)
 [mmcv](https://github.com/open-mmlab/mmcv)
 [meta ROS](https://github.com/ros/meta-ros)
+[Sophus](https://github.com/strasdat/Sophus)
+[gtsam](https://github.com/borglab/gtsam)
+[ceres](https://github.com/ceres-solver/ceres-solver)
+[g2o](https://github.com/RainerKuemmerle/g2o)
+[EI BA](https://github.com/zju3dv/EIBA)
+[ICE BA](https://github.com/baidu/ICE-BA)
+
+
 
 ## Productivity
 [gitignore](https://github.com/github/gitignore)
@@ -44,9 +53,6 @@
 [webviz](https://github.com/cruise-automation/webviz)
 [Python EXE](https://github.com/jabbalaci/PythonEXE)
 [arena](https://github.com/AliyunContainerService/arena)
-[gtsam](https://github.com/borglab/gtsam)
-[ICE BA](https://github.com/baidu/ICE-BA)
-[EI BA](https://github.com/zju3dv/EIBA)
 [Blislab](https://github.com/flame/blislab)
 [SLAM Bench](https://github.com/pamela-project/slambench2)
 [trajectory evaluation](https://github.com/uzh-rpg/rpg_trajectory_evaluation)
