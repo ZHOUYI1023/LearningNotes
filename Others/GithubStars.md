@@ -32,6 +32,7 @@
 [FANN](https://github.com/libfann/fann)
 [mmcv](https://github.com/open-mmlab/mmcv)
 [meta ROS](https://github.com/ros/meta-ros)
+[eigen](https://github.com/PX4/eigen)
 [Sophus](https://github.com/strasdat/Sophus)
 [gtsam](https://github.com/borglab/gtsam)
 [ceres](https://github.com/ceres-solver/ceres-solver)
