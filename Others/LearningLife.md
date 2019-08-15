@@ -38,6 +38,8 @@
 
 **努力提升对自己的“定价权”，既包括努力让自己的能力变得稀有，也包括能撇开平台光环的本事。**
 
+**Everything in life happens according to our time, our clock. You may look at some of your friends and think that they’re ahead of you, maybe some of them you feel are behind, but everything happens at their own pace. They have their own time and clock and so do you. Be patient.**
+
 ---
 
 ## Truth
