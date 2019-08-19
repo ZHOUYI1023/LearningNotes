@@ -159,10 +159,13 @@ print(c.year,c.month,c.day)
 
 ```
 
+* @staticmethod 不需要访问和类相关的属性或数据；如果你定义了一个方法它的返回值永远和类的属性及实例无关，结果永远不变，就用@staticmethod
+* @classmethod 可以访问和类相关（不和实例相关)的属性；如果你定义了一个方法它的返回值和只和类的属性有关，结果可变 .就用@classmethod 
+
 ```python
 #使用@staticmethod或@classmethod，就可以不需要实例化，直接类名.方法名()来调用
 #类方法是给类用的，类在使用时会将类本身当做参数传给类方法的第一个参数
-# @classmethod因为持有cls参数，可以来调用类的属性，类的方法，实例化对象等，避免硬编码
+#@classmethod因为持有cls参数，可以来调用类的属性，类的方法，实例化对象等，避免硬编码
 class A(object):  
     bar = 1  
     def foo(self):  
@@ -190,3 +193,74 @@ This name check makes sure this code block is only executed when this module is 
 ``` python
 if __name__ == '__main__':
 ```
+
+---
+
+* 直接赋值：其实就是对象的引用（别名）。
+* 浅拷贝(copy)：拷贝父对象，不会拷贝对象的内部的子对象。
+* 深拷贝(deepcopy)： copy模块的deepcopy方法，完全拷贝了父对象及其子对象。
+
+```python
+import copy
+a = [1, 2, 3, 4, ['a', 'b']] #原始对象
+ 
+b = a                       #赋值，传对象的引用
+c = copy.copy(a)            #对象拷贝，浅拷贝
+d = copy.deepcopy(a)        #对象拷贝，深拷贝
+ 
+a.append(5)                 #修改对象a
+a[4].append('c')            #修改对象a中的['a', 'b']数组对象
+ 
+print( 'a = ', a )
+print( 'b = ', b )
+print( 'c = ', c )
+print( 'd = ', d )
+```
+```
+# 结果
+('a = ', [1, 2, 3, 4, ['a', 'b', 'c'], 5])
+('b = ', [1, 2, 3, 4, ['a', 'b', 'c'], 5])
+('c = ', [1, 2, 3, 4, ['a', 'b', 'c']])
+('d = ', [1, 2, 3, 4, ['a', 'b']])
+```
+
+---
+
+* Python 2.x中默认都是经典类，只有显式继承了object才是新式类
+* Python 3.x中默认都是新式类，不必显式的继承object
+也就是说：
+``` python
+class Person(object):
+    pass
+class Person():
+    pass
+class Person:
+    pass
+```
+三种写法并无区别，推荐第一种
+
+---
+
+新式类是采用广度优先搜索，旧式类采用深度优先搜索
+```python
+class A():
+    def __init__(self):
+        pass
+    def save(self):
+        print "This is from A"
+class B(A):
+    def __init__(self):
+        pass
+class C(A):
+    def __init__(self):
+        pass
+    def save(self):
+        print  "This is from C"
+class D(B,C):
+    def __init__(self):
+        pass
+fun =  D()
+fun.save()
+```
+经典类的答案： This is from A
+新式类的答案： This is from C
