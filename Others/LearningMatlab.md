@@ -2,7 +2,7 @@
 ## anonymous function
 ```matlab
 sqrt = @(x) x.^2 
-sqr(10)
+sqrt(10)
 ```
 ## function handle
 example: solve an ode
