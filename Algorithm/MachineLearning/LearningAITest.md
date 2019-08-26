@@ -21,3 +21,8 @@ A test oracle is the mechanism by which a tester can determine whether a system 
 #Security Issues
 * Data poisoning
 * Adversarial examples
+
+# Metric
+TPFP
+Precision
+Recall
