@@ -35,9 +35,13 @@
 
 **“格局”两个字，“格”是指认知的深度，“局”是指认知的广度。你的格局越大，你的自我越小。**
 
+**More the knowledge, lesser the ego. Lesser the knowledge, more the ego.**
+
 **努力提升对自己的“定价权”，既包括努力让自己的能力变得稀有，也包括能撇开平台光环的本事。**
 
 **Everything in life happens according to our time, our clock. You may look at some of your friends and think that they’re ahead of you, maybe some of them you feel are behind, but everything happens at their own pace. They have their own time and clock and so do you. Be patient.**
+
+**Sometimes when you are in a dark place, you think you've been buried, but actually you've been planted.**
 
 ---
 
@@ -125,3 +129,11 @@
 **所有公司都是管理第一，技术第二。没有一流管理，领先的技术就会退化；有一流管理，即使技术二流也会进步。**
 
 **物联网时代，芯片功能变简单，选择会分散，OS也随之分散。物联网操作系统，服务于场景的操作系统，而不是服务于设备的。再小的设备都连接网络，从而组成一个场景。**
+
+**产品思维目的是要“最大化用户价值”，项目思维目的是要“高效交付项目”；产品思维关注结果outcome，项目思维关注产出output；产品思维将时间与预算看做达成目标的资源，而项目思维将时间与预算看做需要守住的目标。**
+
+**过去高科技工业的发展历史，每一个新的拐点或者起点，其重要的一环是“定义性的用户体验”，移动互联网的定义性体验就是第一个iPhone。**
+
+**大型车企的收支特点：税前利润率普遍比较低，大多也就在5%甚至更低的水平。可变成本（原材料，零部件，生产，物流，销售）成本可以达到销售收入的70%左右。导致车企的盈利率对可变成本极度敏感，假设销售收入不变的情况下，可变成本增加5%都有可能会吃掉所有利润。**
+
+**没有自身厚度的积累，人脉都是虚假繁荣。**
