@@ -26,3 +26,9 @@ A test oracle is the mechanism by which a tester can determine whether a system 
 TPFP
 Precision
 Recall
+* Accuracy 准确率
+* Precision 精确率
+* Recall 召回率
+* F1 Score
+* ROC-AUC (area under curve)
+* PR-AUC
