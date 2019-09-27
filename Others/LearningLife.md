@@ -43,6 +43,8 @@
 
 **Sometimes when you are in a dark place, you think you've been buried, but actually you've been planted.**
 
+**没有自身厚度的积累，人脉都是虚假繁荣。**
+
 ---
 
 ## Truth
@@ -136,4 +138,15 @@
 
 **大型车企的收支特点：税前利润率普遍比较低，大多也就在5%甚至更低的水平。可变成本（原材料，零部件，生产，物流，销售）成本可以达到销售收入的70%左右。导致车企的盈利率对可变成本极度敏感，假设销售收入不变的情况下，可变成本增加5%都有可能会吃掉所有利润。**
 
-**没有自身厚度的积累，人脉都是虚假繁荣。**
+
+**Summary:
+I. Challenges for speech recognition: understanding speech content within a context, and improvement for long conversation.
+II. Challenge for computer vision: computational complexity for video
+III. Challenges for deep learning: representation of data, make better use of knowledge base, and inference ability
+IV. Train terrain strategy for autonomous driving (purpose: save people life): 
+Compare to human: e.g. don’t understand a policeman’s hand gestures
+Important features of autonomous driving car: start from a small region (e.g. shuttle route or small city), and grow from there; Easy to spot; highly predictable behavior; and supported by modest infrastructure changes
+V. Advanced technique: Imagenet: deep residue net performed well, and speech recognition: attention model performed well 
+VI. Future deep learning application: precision agriculture, automated power plant inspection, automated picking (for ecommerce fulfillment), and automated security robots
+VII. Motivation: Studying has almost no short term rewards, but the long term rewards are huge!
+**
