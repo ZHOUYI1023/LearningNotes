@@ -105,3 +105,19 @@ function  varargout = foo(varargin)
     disp(' ');
 end
 ```
+
+## bsxfun
+binary singleton expansion function
+C = bsxfun(fun,A,B) applies the element-wise binary operation specified by the function handle fun to arrays A and B
+fun: plus, minus, times, ldivide(.\), rdivide(./), power ...
+The element-wise operators ./ and .\ are related to each other by the equation A./B = B.\A.
+``` matlab
+A = [1 2 10; 3 4 20; 9 6 15];
+C = bsxfun(@minus, A, mean(A));
+D = bsxfun(@rdivide, C, std(A))
+```
+timing
+``` matlab
+fbsxfun = @() bsxfun(@minus,A,mean(A));
+timeit(fbsxfun)
+```
