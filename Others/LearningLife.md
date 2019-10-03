@@ -45,6 +45,8 @@
 
 **没有自身厚度的积累，人脉都是虚假繁荣。**
 
+**一旦我们学会了某些东西，我们就需要把它放回能够产生相互联系的系统之中。只有这样，我们才能开始建立对整体的理解。**
+
 ---
 
 ## Truth
@@ -138,6 +140,17 @@
 
 **大型车企的收支特点：税前利润率普遍比较低，大多也就在5%甚至更低的水平。可变成本（原材料，零部件，生产，物流，销售）成本可以达到销售收入的70%左右。导致车企的盈利率对可变成本极度敏感，假设销售收入不变的情况下，可变成本增加5%都有可能会吃掉所有利润。**
 
+**ACES: autonomous driving, connectivity, the electrification of vehicles and shared mobility**
+
+**云化其实就是让服务运行在云端，利用云的弹性伸缩和大规模并发能力来加速我们的研发活动，提高效率。**
+
+**奥卡姆剃刀**
+
+**心智模型**
+
+**第一性原则**
+
+**没有文化的组织将无法持续前行。**
 
 **Summary:
 I. Challenges for speech recognition: understanding speech content within a context, and improvement for long conversation.
