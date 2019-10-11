@@ -1,3 +1,156 @@
+Python是一种解释型语言，比编译型语言运行慢。
+以字节编译，生成一种近似机器语言的中间形式。
+
+---
+
+Unix系统有一个命令叫env，位于/bin或/usr/bin中，会帮助在系统搜索路径中找到python解释器
+在脚本首行写启动指令：
+```#!/usr/bin/env python```
+或
+```#!/bin/env python```
+
+---
+
+```python
+func(positional_args, keyword_args, *tuple_grp_nonkw_args, **dict_grp_kw_args)
+```
+
+
+*args可实现任意无名参数的tuple or list打包，tuple or list 的解包
+*args在赋值操作中将元素打包为list,在函数中将元素打包为tuple
+**kwargs可实现任意键值对的dict打包，dict 的解
+```
+## 打包
+def func(a,*arg,**kwargs):
+    print(a)
+    print(arg)
+    print(kwargs)
+
+func(1,2,3,4,key1=1,key2=2)
+func(1,2,3,4,{'key1:1,key2:2'})
+func(1,2,3,4,**{'key1:1,key2:2'})
+
+# 输出：1; (2, 3, 4); {'key1': 1, 'key2': 2} 
+# 输出: 1; (2, 3, 4, {'key1:1,key2:2'}); {}
+# 输出：1; (2, 3, 4); {'key1': 1, 'key2': 2} 
+
+_,*args,_=[1,2,3,4]    #_表示占位，接收一个元素赋值后丢弃
+
+# 输出：[2, 3]  
+
+## 解包
+def func1(a,b,*args):
+    print(a)
+    print(b)
+    print(args)
+
+def func2(a,c,**kw):
+    print(a)
+    print(c)
+    print(kw)
+    
+func1(*[1,2,3,4])
+func2(**{'a':1,'b':2,'c':3,'d':4})
+
+# 输出：1; 2; (3, 4)
+# 输出：1; 3; {'b': 2, 'd': 4}  
+```
+
+---
+
+ 闭包
+
+
+---
+
+生成器
+
+Yield are used in Python generators. A generator function is defined like a normal function, but whenever it needs to generate a value, it does so with the yield keyword rather than return. If the body of a def contains yield, the function automatically becomes a generator function.
+
+Yield can produce a sequence of values. We should use yield when we want to iterate over a sequence, but don’t want to store the entire sequence in memory.
+
+``` python
+# A generator function that yields 1 for first time, 
+# 2 second time and 3 third time 
+def simpleGeneratorFun(): 
+    yield 1
+    yield 2
+    yield 3
+  
+# Driver code to check above generator function 
+for value in simpleGeneratorFun():  
+    print(value) 
+```
+
+``` python
+# A Python program to generate squares from 1 
+# to 100 using yield and therefore generator 
+  
+# An infinite generator function that prints 
+# next square number. It starts with 1 
+def nextSquare(): 
+    i = 1; 
+  
+    # An Infinite loop to generate squares  
+    while True: 
+        yield i*i                 
+        i += 1  # Next execution resumes  
+                # from this point      
+  
+# Driver code to test above generator  
+# function 
+for num in nextSquare(): 
+    if num > 100: 
+         break    
+    print(num) 
+
+```
+
+
+---
+
+List Comprehension
+``` python
+[expr for iter_val in iterable]
+[expr for iter_val in iterable if cond_expr]
+```
+生成器表达式
+``` python
+(expr for iter_val in iterable if cond_expr)
+```
+
+---
+
+Lambda表达式
+
+---
+
+可变对象值的方法是没有返回值的
+
+---
+
+* 不可变对象
+不可变对象是指对象的内存值不能被改变。Python中变量以引方式指向对象，如果变量引用了不可变对象，当改变该变量时于其所指的对象的值不能被改变，相当于把原来的值复制一份改变，这会开辟一个新的地址，变量再指向这个新的地址，即引用了新的对象数值类型（整数和浮点）、字符串str、元组tuple都是不可型。比如a=1，b=[1]，c={'a':1}，id(a)、id(b[0])、id(1id(c['a'])将输出一样的值，因为1是不可变对象，其在内存不可改变的。
+
+* 可变对象
+可变对象是指对象的内存值可以被改变，变量（准确的说是引用改变后，实际上是其所指的值直接发生改变，并没有发生复制为，也没有开辟新的内存地址，通俗点说就是原地改变。列list、字典dict、集合set是可变类型。
+* 对象的内存地址
+可以使用内置函数id()查看python对象的内存地址。下面是一些意事项：
+(1) python中所有数字、字符串、list等值，创建时会分配内空间，变量通过引用的方式使用它们。比如a=1和b=1，id(a)和i(b)的输出一样，表示a和b都指向相同的内存地址，即引用了同个不可变对象；但是a=[1]和b=[1]，id(a)和id(b)将输出不一的值，a和b指向的是不同的内存地址，即引用了不同的可变对象说明各可变对象是相互独立的，在内存中有独立的内存地址；
+(2) 可用 is 判断两个对象的id（即内存地址）是否一样，用== 判断两个对象的值是否一样。None值也有内存地址；
+(3) list、set对象有各自的独立内存空间，他们的各元素以引的方式指向可变、不可变对象；
+(4) 函数形参的默认值，在内存中会开辟独立的内存空间。比如试代码中test函数的param参数，其默认值是空list，如果调用未传参，则param指向内存中预先分配好的地址，该地址存储的list类型的值；当调用时传参为a，则param引用了a指向的内存间；
+(5) python使用引用计数和垃圾回收来释放内存对象，每个内存象都维护了一个引用计数，包括各种数字、字符串、list、set类型值，以及类实例对象等等，当这些对象的引用计数为 0 时，被解释器回收内存。每次对对象进行引用操作，都会导致其引用数加1， 如下面测试代码中的整数1，列表a、b、c、d、n都引用整数1，以及test函数中的append操作，都会导致数字1的引用计加1；
+(6) copy和deepcopy方法都创建了新的内存对象，如测试代码的b和c都是新的变量，其各个元素可能是指向同一个内存空间。值操作是指向同一个内存块，同时增加引用计数。copy是浅拷贝deepcopy是深拷贝，特别对于可变对象，copy是以引用的方式指同一个可变对象，而deepcopy会开辟新的内存地址，也就是创建新的可变对象。
+---
+
+``` python
+f = open('C:\windows\temp\readme.txt','r')
+# IOError due to \t and \r
+f = open(r'C:\windows\temp\readme.txt','r')
+```
+---
+
 单个*, 如：*parameter是用来接受任意多个参数并将其放在一个元组中。
 ``` python
 def demo(*p):
@@ -264,3 +417,19 @@ fun.save()
 ```
 经典类的答案： This is from A
 新式类的答案： This is from C
+
+---
+
+可调用对象
+* 函数
+1. 内建函数 Built-in Function
+``` python
+dir(__builtins__)
+```
+用c/c++写的，编译过放入python解释器，在__builtin__模块里
+在Python中并没有__builtins__这个模块，只有__builtin__模块，__builtins__模块只是在启动Python解释器时，解释器为我们自动创建的一个到__builtin__模块的引用
+
+https://yq.aliyun.com/articles/40788
+
+2. 用户定义的函数 User-Defined Function
+3. lambda表达式
