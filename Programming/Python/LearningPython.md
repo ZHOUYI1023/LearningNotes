@@ -11,6 +11,81 @@ Unix系统有一个命令叫env，位于/bin或/usr/bin中，会帮助在系统�
 
 ---
 
+添加搜索路径
+``` python
+import sys
+sys.path
+sys.path.append('/home/...')
+```
+---
+
+可以在任何需要放置数据的地方设置一个名称空间。例如函数，模块，类。
+
+---
+
+ ``` python
+from module import * # 覆盖当前命名空间中现有的名字，污染命名空间
+ ```
+
+---
+
+可调用对象
+* 函数
+1. 内建函数 Built-in Function
+``` python
+dir(__builtins__)
+```
+用c/c++写的，编译过放入python解释器，在__builtin__模块里
+在Python中并没有__builtins__这个模块，只有__builtin__模块，__builtins__模块只是在启动Python解释器时，解释器为我们自动创建的一个到__builtin__模块的引用
+
+https://yq.aliyun.com/articles/40788
+
+2. 用户定义的函数 User-Defined Function
+3. lambda表达式
+* 方法
+1. 内建方法 Built-in Method
+2. 用户定义的方法 User-defined Method
+* 类
+
+---
+
+ in Python 3, decimals are rounded to the nearest even number.
+ 四舍六入五成双，作用是让统计数据更公平，降低舍入的误差。
+ ``` python
+round(15.5) # 15
+round(16.5) # 15
+ ```
+
+---
+
+eval()对表达式求值，后者可为字符串或内建函数compile()创建的预编译代码对象
+``` python
+eval('932')
+eval('100 + 200') # int('100 + 200') ValueError
+```
+exec obj被执行的对象可以是原始字符串，也可是文件
+
+``` python
+exec """
+x = 0
+print 'x is currently:', x
+while x < 5:
+    x += 1
+    print 'incrementing x to:', x
+"""
+
+f = open('xcount.py')
+exec f
+f.close()
+
+execfile('xcount.py')
+```
+
+
+
+
+---
+
 ```python
 func(positional_args, keyword_args, *tuple_grp_nonkw_args, **dict_grp_kw_args)
 ```
@@ -19,7 +94,7 @@ func(positional_args, keyword_args, *tuple_grp_nonkw_args, **dict_grp_kw_args)
 *args可实现任意无名参数的tuple or list打包，tuple or list 的解包
 *args在赋值操作中将元素打包为list,在函数中将元素打包为tuple
 **kwargs可实现任意键值对的dict打包，dict 的解
-```
+``` python
 ## 打包
 def func(a,*arg,**kwargs):
     print(a)
@@ -58,12 +133,35 @@ func2(**{'a':1,'b':2,'c':3,'d':4})
 
 ---
 
- 闭包
-
+try-except语句是为了更好地跟踪潜在的错误并在代码里准备好处理异常的逻辑，而不是过滤掉致命错误。
+``` python
+try:
+    let_us_cause_a_NameError
+except NameError as err:
+    print(err, '--> our error message')
+finally:
+    print('done')
+    
+raise IOError("file error")
+```
 
 ---
 
-生成器
+ 闭包
+
+---
+
+* 什么是Iterable(可迭代对象)？
+    * 实现了__iter__方法，并返回迭代器的对象
+    * 或者实现了__getitem__方法，并且可以通过下标从0开始依次取值的对象；取值结束后抛出IndexError
+* 什么是Iterator(迭代器)？
+    * 实现了next()方法或者__next__()的对象；
+
+for语句循环的工作流程是：先判断被循环的是否是Iterable：如果不是，尽管实现了next()，它扔不会去调用，会直接报异常；如果对象有__iter__会使用迭代器；但是如果对象没有__iter__，但是实现了__getitem__，会改用下标迭代的方式。
+
+---
+
+生成器是一个带yield语句的函数。一个函数只返回一次，但一个生成器能暂停执行并返回一个中间的结果。生成器的next()方法被调用时，就会从离开的地方继续。Python的for循环带有__next__()调用和对StopIteration的处理。
 
 Yield are used in Python generators. A generator function is defined like a normal function, but whenever it needs to generate a value, it does so with the yield keyword rather than return. If the body of a def contains yield, the function automatically becomes a generator function.
 
@@ -76,8 +174,13 @@ def simpleGeneratorFun():
     yield 1
     yield 2
     yield 3
-  
-# Driver code to check above generator function 
+
+myG = simpleGeneratorFun()  
+myG.__next__() # 1
+myG.__next__() # 2
+next(myG) # 3
+next(myG) # StopIteration
+
 for value in simpleGeneratorFun():  
     print(value) 
 ```
@@ -105,23 +208,39 @@ for num in nextSquare():
     print(num) 
 
 ```
-
+生成器表达式
+和列表解析非常相似，基本语法相同；不过并不创建列表，而是返回一个生成器。内存友好。
+``` python
+gen_object = (expr for iter_var in iterable if cond_expr)
+```
 
 ---
 
-List Comprehension
+列表解析 List Comprehension
 ``` python
 [expr for iter_val in iterable]
 [expr for iter_val in iterable if cond_expr]
-```
-生成器表达式
-``` python
-(expr for iter_val in iterable if cond_expr)
+
+i = 1
+print('before: i =', i) # 1
+print('comprehension:', [i for i in range(5)])
+# the loop control variables are no longer leaked into the surrounding scope
+print('after: i =', i) # 1
+
 ```
 
 ---
 
 Lambda表达式
+``` python
+a = lambda x, y = 2: x + y
+a(3) # 5
+a(3,5) # 8 
+
+b= lambda *z: z
+b(23, 'xyz') # (23, 'xyz')
+b(42) # (42,)
+```
 
 ---
 
@@ -149,28 +268,9 @@ f = open('C:\windows\temp\readme.txt','r')
 # IOError due to \t and \r
 f = open(r'C:\windows\temp\readme.txt','r')
 ```
+
 ---
 
-单个*, 如：*parameter是用来接受任意多个参数并将其放在一个元组中。
-``` python
-def demo(*p):
-    print(p)
-```
-``` python
-a, *b, c = (1, 2, 3, 4)  # a is now 1, b is now [2, 3] and c is now 4
-```
-两个**, 如:**parameter用于接收类似于关键参数一样赋值的形式的多个实参放入字典中（即把该函数的参数转换为字典）。
-```python
-def demo(**p):
-# p is a dictionary
-    for i in p.items():
-        print(i)
-
-demo(x=1, y=2)
-('x', 1)
-('y', 2)
-```
----
 Simple way to get input data from console
 ```python
 input_string_var = input("Enter some data: ") # Returns the data as a string
@@ -190,6 +290,7 @@ dir(math)
 If you have a Python script named math.py in the same folder as your current script, the file math.py will be loaded instead of the built-in Python module. This happens because the local folder has priority over Python's built-in libraries.
 
 ___
+
 ``` python
 class Human:
     # A class attribute. It is shared by all instances of this class
@@ -419,17 +520,3 @@ fun.save()
 新式类的答案： This is from C
 
 ---
-
-可调用对象
-* 函数
-1. 内建函数 Built-in Function
-``` python
-dir(__builtins__)
-```
-用c/c++写的，编译过放入python解释器，在__builtin__模块里
-在Python中并没有__builtins__这个模块，只有__builtin__模块，__builtins__模块只是在启动Python解释器时，解释器为我们自动创建的一个到__builtin__模块的引用
-
-https://yq.aliyun.com/articles/40788
-
-2. 用户定义的函数 User-Defined Function
-3. lambda表达式
