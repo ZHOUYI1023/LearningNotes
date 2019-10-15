@@ -41,3 +41,14 @@ Error Detection|Autonomous|User assisted
         * Based on task arriaval pattern a time line is built and embedded into the program and no change in schedules are possible during execution.    
 
 [Reference](https://users.ece.cmu.edu/~koopman/des_s99/real_time/)
+
+---
+
+# Protothreads
+
+Protothreads are a novel programming abstraction that provides a ==conditional blocking wait statement==, PT WAIT UNTIL()
+
+The operation takes a conditional statement and blocks the protothread until the statement evaluates to true
+
+all protothreads in a system run on the same stack, which is rewound every time a protothread blocks.
+
