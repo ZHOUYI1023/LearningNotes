@@ -167,3 +167,5 @@ V. Advanced technique: Imagenet: deep residue net performed well, and speech re
 VI. Future deep learning application: precision agriculture, automated power plant inspection, automated picking (for ecommerce fulfillment), and automated security robots
 VII. Motivation: Studying has almost no short term rewards, but the long term rewards are huge!
 **
+
+**History never repeats itself but it rhymes.**
