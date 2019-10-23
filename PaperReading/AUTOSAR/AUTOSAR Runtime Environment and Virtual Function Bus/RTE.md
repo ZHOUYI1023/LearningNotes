@@ -53,7 +53,7 @@ a service-to-service communication is not allowed by the AUTOSAR specication
 ### 3.4 Hardwar-Related Components
 ECU abstraction layer to decouple software from hardware.
 AUTOSAR interface
-But only can be accessed by suitable Sensor/Actuator software components ==?==
+But only can be accessed by suitable Sensor/Actuator software components 
 
 ## 4. Runnabels
 Sequence of instructions that can be started by the RTE
@@ -70,7 +70,7 @@ executed anytime the corresponding OS task is scheduled
 * RTE View
 Task is structured and controlled using RTE glue code that will control the correct execution of the runnables
 * VFB View
-during design time of the application, do not conern the integration context of runnables ==template?==
+during design time of the application, do not conern the integration context of runnables
 ![](Fig5.png)
 In RTE view, yellow block indicates RTE glue codes, red blocks indicate runnables
 
@@ -113,12 +113,12 @@ provides a non-blocking read operation on the actual variable containing the lat
 to wake up the component if the receive operation has completed successfully
 * Activation of runnable entity
 is used for runnables that wish to be invoked upon a new DataReceiveEvent and can then choose to either invoke implicit or explicit receive operations to actually retrieve the new value.
-==table and above description do not match==
+
 ![](Table2.png)
 ### 5.3 Implementation
 #### 5.3.1 API usage
 e.g. a receive port named PassengerDetected that provides a single value called val could be read via the RTE API call RTE_Read_PassengerDetected_val() for instance.
-==received variable need declaration?==
+
 ![](List2.png)
 #### 5.3.2 Sender Implementation
 * Intra-ECU
@@ -135,7 +135,6 @@ directly reads the local variable that contains the most recent value on the inc
 * Case 2:
 Intra-ECU communication scenario
 using a blocking API RTE_Receive() that additionally implements a queue for incoming values
-==do not understand==
 ![](List4.png)
 
 ## 6. Hardware Interaction
@@ -143,7 +142,6 @@ using a blocking API RTE_Receive() that additionally implements a queue for inco
 * provides a unified interface
 * closely coupled to the MCAL, which is hardware specific
 * MCAL provides access to Digital I/O, Analog/Digital Converter, FLASH, EEPROM
-==?==
 
 ![](Fig8.png)
 

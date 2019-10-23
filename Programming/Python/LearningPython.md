@@ -58,6 +58,23 @@ round(16.5) # 15
 
 ---
 
+浮点算术：争议和限制
+浮点数在计算机硬件中表示为以 2 为基数（二进制）的小数。
+大多数的十进制小数都不能精确地表示为二进制小数。这导致在大多数情况下，你输入的十进制浮点数都只能近似地以二进制浮点数形式储存在计算机中。
+在以 2 为基数的情况下， 1/10 是一个无限循环小数
+0.0001100110011001100110011001100110011001100110011...
+因此，在今天的大部分架构上，浮点数都只能近似地使用二进制小数表示，对应分数的分子使用每 8 字节的前 53 位表示，分母则表示为 2 的幂次。
+一旦要做精确计算，那么就不应该再单独使用浮点数，而是应该总是使用Decimal('浮点数')。（或者直接上numpy）否则，当你赋值的时候，精度已经被丢失了。
+``` python
+from decimal import Decimal
+a = Decimal('0.1')
+b = Decimal('0.2')
+c = a + b
+print(c)
+```
+
+---
+
 eval()对表达式求值，后者可为字符串或内建函数compile()创建的预编译代码对象
 ``` python
 eval('932')
@@ -136,7 +153,76 @@ raise IOError("file error")
 
 ---
 
- 闭包: 如果在一个内部函数里，对在外部作用域（但是不在全局作用域）的变量进行引用，那么内部函数就被认为是闭包。定义在外部函数内的但由内部函数引用或者使用的变量被称为自由变量。
+ 闭包: 如果在一个内部函数里，对在外部作用域（但是不在全局作用域）的变量进行引用，那么内部函数就被认为是闭包。
+ 定义在外部函数内的但由内部函数引用或者使用的变量被称为自由变量。
+``` python {highlight=20}
+# nested function
+def print_msg():
+    # print_msg 是外围函数
+    msg = "zen of python"
+
+    def printer():
+        # printer是嵌套函数
+        print(msg)
+    printer()
+# 输出 zen of python
+print_msg()
+
+# Closure 
+# def print_msg():
+    # print_msg 是外围函数
+    msg = "zen of python"
+    def printer():
+        # printer 是嵌套函数
+        print(msg)
+    return printer
+
+another = print_msg()
+# 输出 zen of python
+another()
+
+```
+闭包避免了使用全局变量，此外，闭包允许将函数与其所操作的某些数据（环境）关连起来。
+
+``` python
+def adder(x):
+    def wrapper(y):
+        return x + y
+    return wrapper
+
+adder5 = adder(5)
+# 输出 15
+adder5(10)
+# 输出 11
+adder5(6)
+
+>>> adder5.__closure__
+(<cell at 0x103075910: int object at 0x7fd251604518>,)
+>>> adder5.__closure__[0].cell_contents
+5
+```
+所有函数都有一个 __closure__属性，如果这个函数是一个闭包的话，那么它返回的是一个由 cell 对象 组成的元组对象。cell 对象的cell_contents 属性就是闭包中的自由变量。
+
+---
+
+nonlocal variable
+
+``` python
+def outer():
+    x = "local"
+    
+    def inner():
+        nonlocal x
+        x = "nonlocal"
+        print("inner:", x)
+    
+    inner()
+    print("outer:", x)
+
+outer()
+# inner:nonlocal
+# outer:nonlocal
+```
 
 ---
 
