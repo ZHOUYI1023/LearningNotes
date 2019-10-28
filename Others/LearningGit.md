@@ -19,3 +19,8 @@ git reset --hard HEAD~1 # 删除本地最后一条记录，如果需要删除最
 ---
 
 git rebase -i a8547 # 最后一条待删除记录的前(时间上)一条记录ID
+
+---
+
+checkout (switch to) target branch.
+git cherry-pick <commit id>
