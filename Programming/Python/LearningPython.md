@@ -58,6 +58,7 @@ round(16.5) # 15
 
 ---
 
+<<<<<<< HEAD
 eval()对表达式求值，后者可为字符串或内建函数compile()创建的预编译代码对象
 ``` python
 eval('932')
@@ -66,6 +67,38 @@ eval('100 + 200') # int('100 + 200') ValueError
 exec(obj)
 
 ``` python
+=======
+整数在程序中的使用非常广泛，Python为了优化速度，使用了小整数对象池， 避免为整数频繁申请和销毁内存空间。
+Python 对小整数的定义是 [-5, 256] 这些整数对象是提前建立好的，不会被垃圾回收。
+
+---
+
+浮点算术：争议和限制
+浮点数在计算机硬件中表示为以 2 为基数（二进制）的小数。
+大多数的十进制小数都不能精确地表示为二进制小数。这导致在大多数情况下，你输入的十进制浮点数都只能近似地以二进制浮点数形式储存在计算机中。
+在以 2 为基数的情况下， 1/10 是一个无限循环小数
+0.0001100110011001100110011001100110011001100110011...
+因此，在今天的大部分架构上，浮点数都只能近似地使用二进制小数表示，对应分数的分子使用每 8 字节的前 53 位表示，分母则表示为 2 的幂次。
+一旦要做精确计算，那么就不应该再单独使用浮点数，而是应该总是使用Decimal('浮点数')。（或者直接上numpy）否则，当你赋值的时候，精度已经被丢失了。
+``` python
+from decimal import Decimal
+a = Decimal('0.1')
+b = Decimal('0.2')
+c = a + b
+print(c)
+```
+
+---
+
+eval()对表达式求值，后者可为字符串或内建函数compile()创建的预编译代码对象
+``` python
+eval('932')
+eval('100 + 200') # int('100 + 200') ValueError
+```
+exec(obj)
+
+``` python
+>>>>>>> bc5972ede73426075c5b41eb2eda1b3471ca8f11
 program = 'a = 5\nb=10\nprint("Sum =", a+b)'
 exec(program)
 
@@ -136,7 +169,80 @@ raise IOError("file error")
 
 ---
 
+<<<<<<< HEAD
  闭包: 如果在一个内部函数里，对在外部作用域（但是不在全局作用域）的变量进行引用，那么内部函数就被认为是闭包。定义在外部函数内的但由内部函数引用或者使用的变量被称为自由变量。
+=======
+ 闭包: 如果在一个内部函数里，对在外部作用域（但是不在全局作用域）的变量进行引用，那么内部函数就被认为是闭包。
+ 定义在外部函数内的但由内部函数引用或者使用的变量被称为自由变量。
+``` python {highlight=20}
+# nested function
+def print_msg():
+    # print_msg 是外围函数
+    msg = "zen of python"
+
+    def printer():
+        # printer是嵌套函数
+        print(msg)
+    printer()
+# 输出 zen of python
+print_msg()
+
+# Closure 
+def another():
+    # print_msg 是外围函数
+    msg = "zen of python"
+    def printer():
+        # printer 是嵌套函数
+        print(msg)
+    return printer
+
+another = print_msg()
+# 输出 zen of python
+another()()
+
+```
+闭包避免了使用全局变量，此外，闭包允许将函数与其所操作的某些数据（环境）关连起来。
+
+``` python
+def adder(x):
+    def wrapper(y):
+        return x + y
+    return wrapper
+
+adder5 = adder(5)
+# 输出 15
+adder5(10)
+# 输出 11
+adder5(6)
+
+>>> adder5.__closure__
+(<cell at 0x103075910: int object at 0x7fd251604518>,)
+>>> adder5.__closure__[0].cell_contents
+5
+```
+所有函数都有一个 __closure__属性，如果这个函数是一个闭包的话，那么它返回的是一个由 cell 对象 组成的元组对象。cell 对象的cell_contents 属性就是闭包中的自由变量。
+
+---
+
+nonlocal variable
+
+``` python
+def outer():
+    x = "local"
+    
+    def inner():
+        nonlocal x
+        x = "nonlocal"
+        print("inner:", x)
+    
+    inner()
+    print("outer:", x)
+
+outer()
+# inner:nonlocal
+# outer:nonlocal
+```
+>>>>>>> bc5972ede73426075c5b41eb2eda1b3471ca8f11
 
 ---
 
@@ -201,6 +307,7 @@ for num in nextSquare():
 和列表解析非常相似，基本语法相同；不过并不创建列表，而是返回一个生成器。内存友好。
 ``` python
 gen_object = (expr for iter_var in iterable if cond_expr)
+<<<<<<< HEAD
 ```
 
 ---
@@ -218,6 +325,25 @@ print('after: i =', i) # 1
 
 ```
 
+=======
+```
+
+---
+
+列表解析 List Comprehension
+``` python
+[expr for iter_val in iterable]
+[expr for iter_val in iterable if cond_expr]
+
+i = 1
+print('before: i =', i) # 1
+print('comprehension:', [i for i in range(5)])
+# the loop control variables are no longer leaked into the surrounding scope
+print('after: i =', i) # 1
+
+```
+
+>>>>>>> bc5972ede73426075c5b41eb2eda1b3471ca8f11
 ---
 
 Lambda表达式
@@ -284,9 +410,27 @@ class C(P):
 
 ---
 
+<<<<<<< HEAD
 私有化
 * 双下划线：双下划线开始的属性在运行时被混淆，会在名字前加上下划线和类名。可以防止祖先类或子孙类中的同名冲突。
 * 单下划线：模块级私有化，在属性/函数前加一个_，防止模块的属性用from module import *来加载
+=======
+Python中没有禁止访问类中某一成员的保护机制。
+Python通过编码规范而不是语言机制来完成封装，具体而言，Python规定了对变量命名的公约，约定什么样的变量名表示变量是私有的，不应该被访问(而不是不能被访问)。
+
+
+私有化
+
+* 单下划线
+以单个下划线开头的变量或方法应被视为非公开的API
+外部的调用者也不应该去访问以单下划线开头的变量或方法
+
+* 双下划线
+名称转写(name mangling)：以双下划线开头，并以最多一个下划线结尾的标识符，例如__X，会被转写为_classname__X，其中classname为类名。
+进行名称转写则能有效避免子类中方法的命名冲突
+定义子类的时候，经常会调用父类的__init__()方法，假如父类的__init__()方法调用了父类的非公开函数__initialize()，当我们在子类中也需要__initialize()函数时会造成父类__init__()的异常行为，而名称转写避免了这一冲突，父类的__init__()实际上调用的是_父类名__initialize()。
+
+>>>>>>> bc5972ede73426075c5b41eb2eda1b3471ca8f11
 
 ___
 
