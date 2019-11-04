@@ -1,12 +1,13 @@
 <!DOCTYPE html><html><head>
-      <title>RTE</title>
+      <title>LearningThreading</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <link rel="stylesheet" href="file:///c:\Users\Yi\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.4.3\node_modules\@shd101wyy\mume\dependencies\katex\katex.min.css">
+      <link rel="stylesheet" href="file:///c:\Users\Yi\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.5.0\node_modules\@shd101wyy\mume\dependencies\katex\katex.min.css">
       
       
 
+      
       
       
       
@@ -262,201 +263,72 @@ pre[data-line] .line-highlight[data-end]:after {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview  ">
-      <h1 class="mume-header" id="autosar-runtime-environment-and-virtual-function-bus">AUTOSAR Runtime Environment and Virtual Function Bus</h1>
-
-<h2 class="mume-header" id="1-introdution">1. Introdution</h2>
-
-<p>Cooperate on srandards, compete on implementations</p>
-<h2 class="mume-header" id="2-fundamentals">2. Fundamentals</h2>
-
-<p>Adapt to different hardware platforms</p>
+      <p><a href="https://realpython.com/intro-to-python-threading/">https://realpython.com/intro-to-python-threading/</a></p>
+<hr>
+<p>A thread is a separate flow of execution.<br>
+GIL limits one Python thread to run at a time.</p>
 <ul>
-<li>modularization (different independent components)</li>
-<li>different layers of abstraction</li>
+<li>Tasks that spend much of their time waiting for external events are generally good candidates for threading.</li>
+<li>Problems that require heavy CPU computation and spend little time waiting for external events might not run faster at all.</li>
 </ul>
-<h3 class="mume-header" id="21-virtual-function-bus">2.1 Virtual Function Bus</h3>
+<hr>
+<p>To start a thread</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> threading
+x <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>thread_function<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+x<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>Daemon threads<br>
+a daemon is a process that runs in the background.<br>
+In python, a daemon thread will shut down immediately when the program exits.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">x <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>thread_function<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span> daemon<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+</pre><p>To tell one thread to wait for another thread to finish</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># x.join()</span>
+threads <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> index <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    x <span class="token operator">=</span> threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>thread_function<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    x<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> index<span class="token punctuation">,</span> thread <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>threads<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    thread<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><hr>
+<p><strong>ThreadPoolExecutor</strong> works  as a context manager.<br>
+The end of the with block automatically do a .join() on each of the threads in the pool.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> concurrent<span class="token punctuation">.</span>futures
+<span class="token keyword">with</span> concurrent<span class="token punctuation">.</span>futures<span class="token punctuation">.</span>ThreadPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token keyword">as</span> executor<span class="token punctuation">:</span>
+        executor<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>thread_function<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-<p>a system modeling and communication concept<br>
-virual communication service<br>
-mapped ti acutal impelemented methods specific for the underlying hardware infrastructure</p>
-<h3 class="mume-header" id="22-runtime-environment">2.2 Runtime Environment</h3>
+<span class="token comment"># submit(function, *args, **kwargs)</span>
+<span class="token keyword">with</span> concurrent<span class="token punctuation">.</span>futures<span class="token punctuation">.</span>ThreadPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">as</span> executor<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> index <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        executor<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>thread_function<span class="token punctuation">,</span> index<span class="token punctuation">)</span>
+</pre><p>Note: Using a ThreadPoolExecutor can cause some confusing errors.<br>
+For example, if you call a function that takes no parameters, but you pass it parameters in .map(), the thread will throw an exception.<br>
+Unfortunately, ThreadPoolExecutor will hide that exception, and (in the case above) the program terminates with no output. This can be quite confusing to debug at first.</p>
+<hr>
+<h2 class="mume-header" id="race-conditions">Race Conditions</h2>
 
-<p>runtime environment provides an actual representation of the virtual concepts of the VFB for one specic ECU<br>
-RTE realizes the interfaces of the Virtual Function Bus<br>
-<img src="Fig2.png" alt></p>
-<h3 class="mume-header" id="23-comparison-of-vfb-and-rte">2.3 Comparison of VFB and RTE</h3>
+<p>occur when two or more threads access a shared piece of data or resource.<br>
+Even an operation like x += 1 takes the processor many steps.<br>
+The operating system can swap which thread is running at any time.</p>
+<h2 class="mume-header" id="threadinglock">Threading.Lock()</h2>
 
-<p><img src="Fig3.png" alt></p>
-<h2 class="mume-header" id="3-responsbilities-of-the-runtime-environment">3. Responsbilities of the Runtime Environment</h2>
+<p>The basic functions to do this are .acquire() and .release().<br>
+with threading.Lock()</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">FakeDatabase</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">0</span>
+        self<span class="token punctuation">.</span>_lock <span class="token operator">=</span> threading<span class="token punctuation">.</span>Lock<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-<h3 class="mume-header" id="31-overview">3.1 Overview</h3>
+    <span class="token keyword">def</span> <span class="token function">locked_update</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">with</span> self<span class="token punctuation">.</span>_lock<span class="token punctuation">:</span>
+            local_copy <span class="token operator">=</span> self<span class="token punctuation">.</span>value
+            local_copy <span class="token operator">+=</span> <span class="token number">1</span>
+            time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>value <span class="token operator">=</span> local_copy
+</pre><p>RLock allows a thread to .acquire() an RLock multiple times before it calls .release(). That thread is still required to call .release() the same number of times it called .acquire()</p>
+<hr>
+<h2 class="mume-header" id="producer-consumer-threading">Producer-Consumer Threading</h2>
 
-<p>Interfaces:</p>
-<ul>
-<li>AUTOSAR Interface<br>
-SWC components as well as ECU Abstraction and Complex Device Drivers</li>
-<li>Standardized AUTOSAR Interface<br>
-AUTOSAR services that have a predened and standardized functionality.</li>
-<li>Standardized Interface<br>
-Interfaces can not be described using the VFB specification<br>
-used by the RTE only, cannot be used directly by other softwarecomponents<br>
-e.g. OS has to provide a standardized interface to allow the RTEto consume services like component instantiation or taskscheduling which must not be used by other software components<br>
-<img src="Fig4.png" alt></li>
-</ul>
-<h3 class="mume-header" id="32-autosar-software-components">3.2 AUTOSAR Software Components</h3>
-
-<p>information has to be provided within the Software Component Template and serves as input for the RTE generation</p>
-<ul>
-<li>Hierarchical Structure: the composition of atomic software components, will be used by the RTE to create the required<br>
-instances</li>
-<li>Ports and Interfaces: provided and required ports and their communication semantics</li>
-<li>Internal Behaviour: Runnable Entities and RTE Events for the purpose<br>
-of scheduling and method invocation</li>
-<li>Specifics of the Implementation: memory consumption, execution<br>
-timesa</li>
-</ul>
-<h3 class="mume-header" id="33-autosar-services">3.3 AUTOSAR Services</h3>
-
-<p>logical entity of basic software offering general functionality to be used by AUTOSAR Software Components</p>
-<ul>
-<li>part of the BSW</li>
-<li>attached to the RTE using standarized AUTOSAR interface<br>
-the RTE does not provide any mechanisms to access a service from a remote ECU.<br>
-a service-to-service communication is not allowed by the AUTOSAR specication</li>
-</ul>
-<h3 class="mume-header" id="34-hardwar-related-components">3.4 Hardwar-Related Components</h3>
-
-<p>ECU abstraction layer to decouple software from hardware.<br>
-AUTOSAR interface<br>
-But only can be accessed by suitable Sensor/Actuator software components</p>
-<h2 class="mume-header" id="4-runnabels">4. Runnabels</h2>
-
-<p>Sequence of instructions that can be started by the RTE</p>
-<p>a mapping between operating system tasks and existing runnables is created that is later used by the RTE to define and perform scheduling and execution of the runnables according to their specication.</p>
-<ul>
-<li>Type 1 Runnables terminate within a finite time, mapped to basic tasks</li>
-<li>Type 2 Runnables contains at least one wait point, mapped to extended tasks</li>
-</ul>
-<h3 class="mume-header" id="41-integration">4.1 Integration</h3>
-
-<ul>
-<li>Operating System View<br>
-OS does not know about the concepts of runnables<br>
-executed anytime the corresponding OS task is scheduled</li>
-<li>RTE View<br>
-Task is structured and controlled using RTE glue code that will control the correct execution of the runnables</li>
-<li>VFB View<br>
-during design time of the application, do not conern the integration context of runnables<br>
-<img src="Fig5.png" alt><br>
-In RTE view, yellow block indicates RTE glue codes, red blocks indicate runnables</li>
-</ul>
-<h3 class="mume-header" id="42-rte-events">4.2 RTE Events</h3>
-
-<p>to activate or wake up runnables</p>
-<ul>
-<li>Activation<br>
-invocation of a runnable instance</li>
-<li>Wake Up<br>
-Wait by blocking methods: RTE_Receive() or RTE_Feedback()<br>
-Return/Wake up by RTE events</li>
-</ul>
-<p><img src="Table1.png" alt></p>
-<h3 class="mume-header" id="43-operating-system-task-mapping">4.3 Operating System Task Mapping</h3>
-
-<ul>
-<li>Scenario 1<br>
-a single type 1 runnable</li>
-<li>Scenario 2<br>
-sequential execution of several type 1 runnables that share a common cycle time</li>
-<li>Scenario 3<br>
-continuously checking for RTE Event to decide which of the two category 1 runnables need to be executed</li>
-<li>Scenario 4<br>
-type 2 runnable is generally integrated as a standalone runnable in a single extended OS task<br>
-<img src="Fig6.png" alt></li>
-</ul>
-<h2 class="mume-header" id="5-rte-implementation">5. RTE Implementation</h2>
-
-<p>Communication Patterns:</p>
-<ul>
-<li>Sender-Receiver</li>
-<li>Client-Server<br>
-Below using the example of the Sender-Receiver pattern</li>
-</ul>
-<h3 class="mume-header" id="51-fundamentals">5.1 Fundamentals</h3>
-
-<p><img src="Fig7.png" alt><br>
-VFB model does not consider the acutal location of the software components</p>
-<h3 class="mume-header" id="52-sendreceive-modes">5.2 Send/Receive Modes</h3>
-
-<p>four different modes of data receive:</p>
-<ul>
-<li>Implicit Receive<br>
-provides only a copy of the respective value to the calling instance</li>
-<li>Explicit Receive<br>
-provides a non-blocking read operation on the actual variable containing the latest valid value</li>
-<li>Wake up of wait point<br>
-to wake up the component if the receive operation has completed successfully</li>
-<li>Activation of runnable entity<br>
-is used for runnables that wish to be invoked upon a new DataReceiveEvent and can then choose to either invoke implicit or explicit receive operations to actually retrieve the new value.</li>
-</ul>
-<p><img src="Table2.png" alt></p>
-<h3 class="mume-header" id="53-implementation">5.3 Implementation</h3>
-
-<h4 class="mume-header" id="531-api-usage">5.3.1 API usage</h4>
-
-<p>e.g. a receive port named PassengerDetected that provides a single value called val could be read via the RTE API call RTE_Read_PassengerDetected_val() for instance.</p>
-<p><img src="List2.png" alt></p>
-<h4 class="mume-header" id="532-sender-implementation">5.3.2 Sender Implementation</h4>
-
-<ul>
-<li>Intra-ECU<br>
-a simple write statement to a variable in a shared memory location</li>
-<li>Inter-ECU<br>
-Need consume a communication service object<br>
-<img src="List3.png" alt></li>
-</ul>
-<h4 class="mume-header" id="533-receiver-implementation">5.3.3 Receiver Implementation</h4>
-
-<p>Describe in Table 2 above<br>
-Examples</p>
-<ul>
-<li>Case 1:<br>
-explicit reading in an intra-ECU communication<br>
-directly reads the local variable that contains the most recent value on the incoming port</li>
-<li>Case 2:<br>
-Intra-ECU communication scenario<br>
-using a blocking API RTE_Receive() that additionally implements a queue for incoming values<br>
-<img src="List4.png" alt></li>
-</ul>
-<h2 class="mume-header" id="6-hardware-interaction">6. Hardware Interaction</h2>
-
-<h3 class="mume-header" id="61-ecu-abstraction">6.1 ECU Abstraction</h3>
-
-<ul>
-<li>provides a unified interface</li>
-<li>closely coupled to the MCAL, which is hardware specific</li>
-<li>MCAL provides access to Digital I/O, Analog/Digital Converter, FLASH, EEPROM</li>
-</ul>
-<p><img src="Fig8.png" alt></p>
-<h3 class="mume-header" id="62-sensors-and-actuators">6.2 Sensors and Actuators</h3>
-
-<ul>
-<li>Sensor and Actuator Hardware can only be accessed using the interfaces provided by the ECU abstraction</li>
-<li>Only sensor and sctuator software components can access them</li>
-</ul>
-<h3 class="mume-header" id="63-complex-device-drivers">6.3 Complex Device Drivers</h3>
-
-<ul>
-<li>bypass that hardware restriction for resource critical and/or Non-AUTOSAR compliant software components</li>
-<li>usually for complex sensor or actuator drivers</li>
-</ul>
-<h3 class="mume-header" id="64-architectural-benefits">6.4 Architectural Benefits</h3>
-
-<ul>
-<li>relocatability of AUTOSAR software components</li>
-<li>allow to develop components of each layer independently</li>
-<li>interchange components without affecting components from the layers above</li>
-</ul>
+<p>threading or process synchronization issues</p>
 
       </div>
       

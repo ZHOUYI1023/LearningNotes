@@ -1,9 +1,48 @@
 # Matlab Tricks
+
+
+## add matlab kernel to jupyter notebook
+1. add python engine
+```
+cd \d D:\Program Files\MATLAB\R2019b\extern\engines\python
+python setup.py install
+```
+2. install python package
+```
+pip install pymatbridge
+pip install matlab_kernel
+python -m matlab_kernel install
+```
+
+3. add environment variable
+```
+MATLAB_EXECUTABLE = D:\Program Files\MATLAB\R2019b\bin\matlab.exe
+```
+
+## convert a vector/matrix into column vector
+```matlab
+x = x(:);
+```
+
+## find index of the minimum entry
+``` matlab
+[MinValue, MinIndex] = min(A(:)); % Find the minimum element in A
+[row,col] = ind2sub(size(A), MinIndex); % Convert MinIndex to subscripts
+```
+
+## plot vector
+```matlab
+x = (2;3);
+quiver(0,0,x(1),x(2))
+
+```
+
 ## anonymous function
 ```matlab
 sqrt = @(x) x.^2 
 sqrt(10)
 ```
+
 ## function handle
 example: solve an ode
 ```matlab
@@ -46,6 +85,57 @@ for y20 = [0 0.5 1 1.5 2 2.5]
 end
 
 ```
+
+## nargin nargout
+nargin：number of argument in 
+nargout：number of argument out
+
+```matlab
+function [x0, y0] = myplot(x, y, npts, angle, subdiv)
+if nargin < 5, subdiv = 20; end
+if nargin < 4, angle = 10; end
+if nargin < 3, npts = 25; end
+ ...
+if nargout == 0
+     plot(x, y)
+else
+     x0 = x;
+     y0 = y;
+end
+
+```
+
+## varargin varargout
+varargin : variable argument in
+varargout : variable argument out
+
+``` matlab
+function varargout = foo(varargin)
+    fprintf('How many output arguments? %d \nAnd they are: \n',nargout);
+    for k=1:nargout
+        varargout(k) = varargin(k); % the same as {varargin{k}};
+        fprintf('%s ', num2str(varargout{k}));
+    end
+    disp(' ');
+end
+```
+
+## bsxfun
+binary singleton expansion function
+C = bsxfun(fun,A,B) applies the element-wise binary operation specified by the function handle fun to arrays A and B
+fun: plus, minus, times, ldivide(.\), rdivide(./), power ...
+The element-wise operators ./ and .\ are related to each other by the equation A./B = B.\A.
+``` matlab
+A = [1 2 10; 3 4 20; 9 6 15];
+C = bsxfun(@minus, A, mean(A));
+D = bsxfun(@rdivide, C, std(A))
+```
+timing
+``` matlab
+fbsxfun = @() bsxfun(@minus,A,mean(A));
+timeit(fbsxfun)
+```
+
 ## class
 ```matlab
 classdef WaypointClass
@@ -71,53 +161,3 @@ classdef WaypointClass
     end
 end
 
-```
-## nargin nargout
-nargin：number of argument in 
-nargout：number of argument out
-
-```matlab
-function [x0, y0] = myplot(x, y, npts, angle, subdiv)
-if nargin < 5, subdiv = 20; end
-if nargin < 4, angle = 10; end
-if nargin < 3, npts = 25; end
- ...
-if nargout == 0
-     plot(x, y)
-else
-     x0 = x;
-     y0 = y;
-end
-
-```
-
-## varargin varargout
-varargin : variable argument in
-varargout : variable argument outvarargout
-
-``` matlab
-function  varargout = foo(varargin)
-    fprintf('How many output arguments? %d \nAnd they are: \n',nargout);
-    for k=1:nargout
-        varargout(k) = varargin(k); % the same as {varargin{k}};
-        fprintf('%s ', num2str(varargout{k}));
-    end
-    disp(' ');
-end
-```
-
-## bsxfun
-binary singleton expansion function
-C = bsxfun(fun,A,B) applies the element-wise binary operation specified by the function handle fun to arrays A and B
-fun: plus, minus, times, ldivide(.\), rdivide(./), power ...
-The element-wise operators ./ and .\ are related to each other by the equation A./B = B.\A.
-``` matlab
-A = [1 2 10; 3 4 20; 9 6 15];
-C = bsxfun(@minus, A, mean(A));
-D = bsxfun(@rdivide, C, std(A))
-```
-timing
-``` matlab
-fbsxfun = @() bsxfun(@minus,A,mean(A));
-timeit(fbsxfun)
-```
