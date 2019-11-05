@@ -1,6 +1,5 @@
 Matlab Executable (MEX) external interface function
 
-
 Acceleration Using MEX
 * when you may see a speedup
     * Often for communications and signal processing
@@ -33,5 +32,5 @@ prhs|Array of mxArray pointers to the input variables|varargin
 
 The output variables are initially unassigned; it is the responsibility of the MEX-function to create them. 
 
-If nlhs = 0, the MEX-function is still allowed return one output variable, in which case plhs[0] represents the ans variable.
+If nlhs = 0, the MEX-function is still allowed return one output variable, in which case plhs[0] represents the **ans** variable.
 

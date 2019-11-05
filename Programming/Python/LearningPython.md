@@ -58,16 +58,6 @@ round(16.5) # 15
 
 ---
 
-<<<<<<< HEAD
-eval()对表达式求值，后者可为字符串或内建函数compile()创建的预编译代码对象
-``` python
-eval('932')
-eval('100 + 200') # int('100 + 200') ValueError
-```
-exec(obj)
-
-``` python
-=======
 整数在程序中的使用非常广泛，Python为了优化速度，使用了小整数对象池， 避免为整数频繁申请和销毁内存空间。
 Python 对小整数的定义是 [-5, 256] 这些整数对象是提前建立好的，不会被垃圾回收。
 
@@ -98,7 +88,6 @@ eval('100 + 200') # int('100 + 200') ValueError
 exec(obj)
 
 ``` python
->>>>>>> bc5972ede73426075c5b41eb2eda1b3471ca8f11
 program = 'a = 5\nb=10\nprint("Sum =", a+b)'
 exec(program)
 
@@ -169,9 +158,6 @@ raise IOError("file error")
 
 ---
 
-<<<<<<< HEAD
- 闭包: 如果在一个内部函数里，对在外部作用域（但是不在全局作用域）的变量进行引用，那么内部函数就被认为是闭包。定义在外部函数内的但由内部函数引用或者使用的变量被称为自由变量。
-=======
  闭包: 如果在一个内部函数里，对在外部作用域（但是不在全局作用域）的变量进行引用，那么内部函数就被认为是闭包。
  定义在外部函数内的但由内部函数引用或者使用的变量被称为自由变量。
 ``` python {highlight=20}
@@ -242,7 +228,6 @@ outer()
 # inner:nonlocal
 # outer:nonlocal
 ```
->>>>>>> bc5972ede73426075c5b41eb2eda1b3471ca8f11
 
 ---
 
@@ -307,7 +292,6 @@ for num in nextSquare():
 和列表解析非常相似，基本语法相同；不过并不创建列表，而是返回一个生成器。内存友好。
 ``` python
 gen_object = (expr for iter_var in iterable if cond_expr)
-<<<<<<< HEAD
 ```
 
 ---
@@ -325,25 +309,6 @@ print('after: i =', i) # 1
 
 ```
 
-=======
-```
-
----
-
-列表解析 List Comprehension
-``` python
-[expr for iter_val in iterable]
-[expr for iter_val in iterable if cond_expr]
-
-i = 1
-print('before: i =', i) # 1
-print('comprehension:', [i for i in range(5)])
-# the loop control variables are no longer leaked into the surrounding scope
-print('after: i =', i) # 1
-
-```
-
->>>>>>> bc5972ede73426075c5b41eb2eda1b3471ca8f11
 ---
 
 Lambda表达式
@@ -410,11 +375,6 @@ class C(P):
 
 ---
 
-<<<<<<< HEAD
-私有化
-* 双下划线：双下划线开始的属性在运行时被混淆，会在名字前加上下划线和类名。可以防止祖先类或子孙类中的同名冲突。
-* 单下划线：模块级私有化，在属性/函数前加一个_，防止模块的属性用from module import *来加载
-=======
 Python中没有禁止访问类中某一成员的保护机制。
 Python通过编码规范而不是语言机制来完成封装，具体而言，Python规定了对变量命名的公约，约定什么样的变量名表示变量是私有的，不应该被访问(而不是不能被访问)。
 
@@ -430,7 +390,6 @@ Python通过编码规范而不是语言机制来完成封装，具体而言，Py
 进行名称转写则能有效避免子类中方法的命名冲突
 定义子类的时候，经常会调用父类的__init__()方法，假如父类的__init__()方法调用了父类的非公开函数__initialize()，当我们在子类中也需要__initialize()函数时会造成父类__init__()的异常行为，而名称转写避免了这一冲突，父类的__init__()实际上调用的是_父类名__initialize()。
 
->>>>>>> bc5972ede73426075c5b41eb2eda1b3471ca8f11
 
 ___
 
@@ -663,3 +622,25 @@ fun.save()
 新式类的答案： This is from C
 
 ---
+
+## 跳出多重循环
+``` python
+# use else in for loop
+# 循环体的else分支触发条件是循环正常结束。
+# 如果循环内break了，不触发else，则执行下一句外层循环中的break
+# 如果正常结束，执行else分支里的continue，直接跳转到外层循环的下一轮，跳过了第二个break。
+for i in range(1,100):
+    for j in range(1,100):
+       break
+    else:
+       continue
+    break
+# use flag
+exitFlag = False
+for i in range(1,100):
+    for j in range(1,100):
+        exitFlag = True
+        break
+    if exitFlag:
+        break
+```
