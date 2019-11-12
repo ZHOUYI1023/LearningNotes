@@ -44,14 +44,80 @@ In C++, there are additional rules, for example, when it's passed by reference.
 
 ---
 
-* Register Variable
+## register
+不能对它应用一元的 '&' 运算符（因为它没有内存位置）
 Unless you are working on embedded systems where you know how to optimize code for the given application, there is no use of register variables.
 
-* Static Variable
+## auto
+auto存储类是所有局部变量默认的存储类。
 
-* External Variable
+## static
+* 使用 static 修饰局部变量可以在函数调用之间保持局部变量的值
+* 当 static 修饰全局变量时，会使变量的作用域限制在声明它的文件内
+* 静态函数只能在声明它的文件中可见，其他文件不能引用该函数。不同的文件可以使用相同名字的静态函数，互不影响
 
-* Automatic Variable
+==非静态函数可以在另一个文件中直接引用，甚至不必使用extern声明==
+有的公司编码规范明确规定只用于本文件的函数要全部使用static关键字声明，这是一个良好的编码风格。
+
+
+## extern
+普通全局变量对整个工程可见，其他文件可以使用extern外部声明后直接使用。也就是其他文件不能再定义一个与其相同名字的变量了。
+
+* 对变量而言，如果你想在本源文件中使用另一个源文件的变量，就需要在使用前extern声明该变量，或者在头文件中用extern声明该变量；
+
+* 对函数而言，如果你想在本源文件中使用另一个源文件的函数，就需要在使用前用声明该变量，声明函数加不加extern都没关系，所以在头文件中函数可以不用加extern
+
+### extern 变量
+```c
+extern int a;//声明一个全局变量a, 可重复声明
+
+int a; //定义一个全局变量
+extern int a =0 ;//定义一个全局变量a 并给初值。
+int a =0;//定义一个全局变量a,并给初值，
+```
+当你要引用一个全局变量的时候，你就要声明，extern int a;这时候extern不能省略，因为省略了，就变成int a;这是一个定义，不是声明。
+
+### extern函数
+
+声明的时候用extern说明这是一个声明
+定义的时候用extern，说明这个函数是可以被外部引用的
+但由于函数的定义和声明是有区别的，定义函数要有函数体，声明函数没有函数体，所以函数定义和声明时都可以将extern省略掉
+
+
+
+
+---
+## implicit type conversion
+### 整数提升
+```c
+//把小于 int 或 unsigned int 的整数类型转换为 int 或 unsigned int 
+int  i = 17;
+char c = 'c';
+int sum;
+sum = i + c; // char->int
+
+```
+### 算术转换
+```c
+int  i = 17;
+char c = 'c';
+float sum;
+// 隐式地把两边值强制转换为相同的类型
+// 编译器首先执行整数提升
+// 如果操作数类型不同，被转换为下列层次中出现的最高层次的类型
+sum = i + c;// 整数提升char->int, 算术转换int->float
+```
+## explicit type conversion
+### 强制类型转换
+
+```c
+int sum = 17, count = 5;
+double mean;
+//强制类型转换运算符的优先级大于除法
+//因此 sum 的值首先被转换为 double 型，然后除以 count，得到一个类型为 double 的值。
+mean = (double) sum / count;
+
+```
 
 ---
 
@@ -144,8 +210,8 @@ int (*arr)[20]
 ```
 
 ### arr and &arr
-* arr是数组名，数组名表示数组首元素的地址
-* &arr就是数组指针，指针的指向是整个数组
+* arr是数组名，数组名表示数组首元素的地址， *arr得到的是arr[0]
+* &arr就是数组指针，指针的指向是整个数组, *&arr得到的是arr
 
 二者指向的地址是相同的但类型不同
 * arr+1是指向数组第二个元素的指针。
@@ -217,4 +283,204 @@ int **pp = &ip;
 6.将一个字符串常量赋给一个字符指针
 ```c
 char *cp = "abcdefg";
+```
+
+---
+
+## 悬挂指针/野指针
+指针指向非法的内存地址，那么这个指针就是悬挂指针，也叫野指针。
+* 使用未初始化的指针
+* 指针所指的对象已经消亡
+* 指针释放后之后未置NULL
+对指针进行free和delete，只是把指针所指的内存空间给释放掉，但并没有把指针本身置空，此时指针指向的就是“垃圾”内存。
+* 在C语言中，realloc函数使用不当
+
+---
+
+## Dynamic Memory Allocation
+https://www.programiz.com/c-programming/c-dynamic-memory-allocation
+
+
+---
+
+### union
+
+共用体是一种特殊的数据类型，允许您在相同的内存位置存储不同的数据类型。您可以定义一个带有多成员的共用体，但是任何时候只能有一个成员带有值。共用体提供了一种使用相同的内存位置的有效方式。
+
+* the size of a union variable will always be the size of its largest element
+```c
+union unionJob
+{
+   //defining a union
+   char name[32];
+   float salary;
+   int workerNo;
+} uJob;
+
+int main()
+{
+   printf("size of union = %d bytes", sizeof(uJob));
+   return 0;
+}
+
+```
+Output
+```
+size of union = 32
+
+```
+
+* Only one union member can be accessed at a time 
+```c
+union Job
+{
+   float salary;
+   int workerNo;
+} j;
+int main()
+{
+   j.salary = 12.3;
+   j.workerNo = 100;
+   printf("Salary = %.1f\n", j.salary);
+   printf("Number of workers = %d", j.workerNo);
+   return 0;
+}
+
+```
+Output
+```
+Salary = 0.0
+Number of workers = 100
+```
+
+---
+
+结构体对齐
+
+所有的成员在分配内存时都要与所有成员中占内存最多的数据类型所占内存空间的字节数对齐。
+假如这个字节数为 N，那么对齐的原则是：
+* 理论上所有成员在分配内存时都是紧接在前一个变量后面依次填充的
+* 如果一行中剩下的空间不足以填充某成员变量，则该成员变量在分配内存时另起一行分配
+
+但有时候为了增强程序的可读性,需要没有规律地写
+
+``` c
+struct Align12{
+    char c1;
+    int i1;
+    char c2;
+};
+
+struct Align8{
+    char c1;
+    char c2;
+    int i1;
+};
+
+struct Align16{
+    char c1;
+    char c2;
+    char c3;
+    char c4;
+    char c5;
+    int i1;
+    char c6;
+};
+
+```
+
+---
+
+字符串数组不能用"="直接赋值, 即s="Good News!"是不合法的。所以应分清字符串数组和字符串指针的不同赋值方法。 
+
+字符串指针
+```c
+char *str;
+str = "This is a C string.";
+```
+
+1、定义的时候直接用字符串赋值
+```c
+char a[10]="hello";
+```
+2、定义的时候逐个赋值
+```c
+char a[10]={'h','e','l','l','o'};
+```
+3、利用strcpy
+``` c
+char a[10]; 
+strcpy(a, "hello");
+```
+
+易错情况：
+```c
+char a[10]; 
+a[10] = "hello";//一个字符怎么能容纳一个字符串？况且a[10]也是不存在的！
+a = "hello";//a虽然是指针，但是它已经指向在堆栈中分配的10个字符空间，现在这个情况a又指向数据区中的hello常量，这里的指针a出现混乱
+```
+
+---
+
+* 运算符共分为15级，1级优先级最高，15级优先级最低
+* 同一优先级的运算符，运算次序由结合方向所决定。(结合性：2 13 14 是从右至左 其他都是 从左至右)
+* 简单记就是：！ > 算术运算符 > 关系运算符 > && > || > 赋值运算符
+
+```
+括号成员第一;            //括号运算符[]() 成员运算符. ->
+
+全体单目第二;            //所有的单目运算符比如++、 --、 +(正)、 -(负) 、指针运算*、&
+乘除余三,加减四;         //这个"余"是指取余运算即%
+
+移位五，关系六;          //移位运算符：<< >> ，关系：> < >= <= 等
+
+等于(与)不等排第七;      //即== 和!=
+
+位与异或和位或;   "三分天下"八九十;     //这几个都是位运算: 位与(&)异或(^)位或(|) 
+
+逻辑或跟与;              //逻辑运算符:|| 和 &&
+
+十二和十一;             //注意顺序:优先级(||) 底于 优先级(&&) 
+
+条件高于赋值;           //三目运算符优先级排到13 位只比赋值运算符和","高
+
+逗号运算级最低!         //逗号运算符优先级最低 
+```
+
+---
+
+结构体的不完整声明
+```c
+
+struct B;    //对结构体B进行不完整声明
+ 
+//结构体A中包含指向结构体B的指针
+struct A
+{
+    struct B *partner;
+    //other members;
+};
+  
+//结构体B中包含指向结构体A的指针，在A声明完后，B也随之进行声明
+struct B
+{
+    struct A *partner;
+    //other members;
+};
+```
+---
+
+enum类型
+
+1. 枚举常量（也就是花括号中的常量名）默认第一个枚举常量的值为0，往后每个枚举常量依次递增1
+2. 在部分显示说明的情况下，未指定的枚举名的值将依着之前最有一个指定值向后依次递增
+3. 一个整数不能直接赋值给一个枚举变量，必须用该枚举变量所属的枚举类型进行类型强制转换后才能赋值
+4. 同一枚举类型中不同的枚举成员可以具有相同的值
+5. 同一个程序中不能定义同名的枚举类型，不同的枚举类型中也不能存在同名的枚举成员
+```c
+enum week{Mon = 1, Tues, Wed, Thurs}num;
+
+num = (enum week)10;
+printf("%d", num);
+
 ```
