@@ -77,14 +77,121 @@ int a =0;//定义一个全局变量a,并给初值，
 ```
 当你要引用一个全局变量的时候，你就要声明，extern int a;这时候extern不能省略，因为省略了，就变成int a;这是一个定义，不是声明。
 
+extern 指针变量
+```c
+// 函数指针
+// 在header中声明
+extern void (*current_menu)(int);
+// 在一个源文件中定义
+void (*current_menu)(int) = &the_func_i_want;
+```
+
 ### extern函数
 
 声明的时候用extern说明这是一个声明
 定义的时候用extern，说明这个函数是可以被外部引用的
 但由于函数的定义和声明是有区别的，定义函数要有函数体，声明函数没有函数体，所以函数定义和声明时都可以将extern省略掉
 
+---
+
+## 回调函数
+函数指针变量可以作为某个函数的参数来使用的，回调函数就是一个通过函数指针调用的函数。(为什么不直接调用？因为回调可随意更换)
+```c
+#include <stdlib.h>  
+#include <stdio.h>
+ 
+// 回调函数
+void populate_array(int *array, size_t arraySize, int (*getNextValue)(void))
+{
+    for (size_t i=0; i<arraySize; i++)
+        array[i] = getNextValue();
+}
+ 
+// 获取随机值
+int getNextRandomValue(void)
+{
+    return rand();
+}
+ 
+int main(void)
+{
+    int myarray[10];
+    populate_array(myarray, 10, getNextRandomValue);
+    for(int i = 0; i < 10; i++) {
+        printf("%d ", myarray[i]);
+    }
+    printf("\n");
+    return 0;
+}
+
+```
+typedef函数指针
+```c
+typedef void (*sighandler_t)(int);
+sighandler_t signal(int signum, sighandler_t handler);
+```
+
+```c
+#include <stdlib.h>  
+#include <stdio.h>
+ 
+// 回调函数
+typedef int (*getNextValue)(void)
+
+void populate_array(int *array, size_t arraySize, getNextValue getNextRandomValue)
+{
+    for (size_t i=0; i<arraySize; i++)
+        array[i] = getNextRandomValue();
+}
+ 
+// 获取随机值
+int getNextRandomValue(void)
+{
+    return rand();
+}
+ 
+int main(void)
+{
+    int myarray[10];
+    populate_array(myarray, 10, getNextRandomValue);
+    for(int i = 0; i < 10; i++) {
+        printf("%d ", myarray[i]);
+    }
+    printf("\n");
+    return 0;
+}
 
 
+```
+
+---
+
+## 结构体中的函数指针
+C语言中的struct是最接近类的概念，但是在C语言的struct中只有成员，不能有函数，但是可以有指向函数的指针
+```c
+#include <stdio.h>
+struct DEMO{
+    int x,y;
+    int (*func)(int,int); //函数指针
+};
+ 
+int add1(int x,int y){
+    return x*y;
+}
+ 
+int add2(int x,int y){
+    return x+y;
+}
+ 
+void main(){
+    struct DEMO demo;
+    demo.func=add2; //结构体函数指针赋值
+    printf("func(3,4)=%d\n",demo.func(3,4));
+    demo.func=add1;
+    printf("func(3,4)=%d\n",demo.func(3,4));
+}
+
+```
 
 ---
 ## implicit type conversion
@@ -484,3 +591,4 @@ num = (enum week)10;
 printf("%d", num);
 
 ```
+
