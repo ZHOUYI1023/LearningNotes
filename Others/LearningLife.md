@@ -169,3 +169,5 @@ VII. Motivation: Studying has almost no short term rewards, but the long term re
 **
 
 **History never repeats itself but it rhymes.**
+
+**不同的立场若果不能回到事实讲话，永远对不了焦**
