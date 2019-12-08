@@ -156,18 +156,15 @@
 
 **没有文化的组织将无法持续前行。**
 
-**Summary:
-I. Challenges for speech recognition: understanding speech content within a context, and improvement for long conversation.
-II. Challenge for computer vision: computational complexity for video
-III. Challenges for deep learning: representation of data, make better use of knowledge base, and inference ability
-IV. Train terrain strategy for autonomous driving (purpose: save people life): 
-Compare to human: e.g. don’t understand a policeman’s hand gestures
-Important features of autonomous driving car: start from a small region (e.g. shuttle route or small city), and grow from there; Easy to spot; highly predictable behavior; and supported by modest infrastructure changes
-V. Advanced technique: Imagenet: deep residue net performed well, and speech recognition: attention model performed well 
-VI. Future deep learning application: precision agriculture, automated power plant inspection, automated picking (for ecommerce fulfillment), and automated security robots
-VII. Motivation: Studying has almost no short term rewards, but the long term rewards are huge!
-**
+
+**Important features of autonomous driving car: start from a small region (e.g. shuttle route or small city), and grow from there; Easy to spot; highly predictable behavior; and supported by modest infrastructure changes**
+
+**Future deep learning application: precision agriculture, automated power plant inspection, automated picking (for ecommerce fulfillment), and automated security robots**
+
+**Studying has almost no short term rewards, but the long term rewards are huge!**
 
 **History never repeats itself but it rhymes.**
 
 **不同的立场若果不能回到事实讲话，永远对不了焦**
+
+**司法公正在法律实践中包含有两类，即实体正义和程序正义。所谓实体正义，是指司法活动对人们在实体上的权利、义务和责任进行确定时所要遵循的价值标准，它强调结果的正当合理性与道德性。而所谓程序正义，则是指法律程序在具体运作过程中所要实现的价值目标。程序正义注重过程，要求司法机关在诉讼活动这一流水作业线上始终保持相关的正义性，包括在程序上的平等、独立、民主、公开、科学，审判人员的中立等。英美法系的正义理念从另一角度提出了一种新的诉讼价值理论模式，其认为诉讼应当不止注重结果，也应该着眼于放在过程本身。**

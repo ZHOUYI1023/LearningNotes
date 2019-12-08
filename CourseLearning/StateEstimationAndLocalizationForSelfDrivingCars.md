@@ -95,6 +95,8 @@ Navigation Frame
     * y True North
     * z Up
 
+* Frenet Frame
+
 Sensor Frame
 
 ## GNSS/INS Sensing for Pose Estimation
