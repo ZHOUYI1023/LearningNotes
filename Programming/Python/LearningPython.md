@@ -3,6 +3,10 @@ Python是一种解释型语言，比编译型语言运行慢。
 
 ---
 
+小心命名冲突：module（文件名），类，函数，变量
+
+---
+
 Unix系统有一个命令叫env，位于/bin或/usr/bin中，会帮助在系统搜索路径中找到python解释器
 在脚本首行写启动指令：
 ```#!/usr/bin/env python```
@@ -93,6 +97,32 @@ exec(program)
 
 program = input('Enter a program:')
 exec(program)
+```
+
+---
+
+```python
+# old school %-formatting
+"Hello, %s. You are %s." % (name, age)
+
+# str.format()
+"Hello, {}. You are {}.".format(name, age)
+# reference variables in any order by referencing their index
+"Hello, {1}. You are {0}.".format(age, name)
+"Hello, {name}, you are {age}".format(name = name,age = age)
+# print dictionary
+person = {'name': 'Eric', 'age': 74}
+"Hello, {name}. You are {age}.".format(**person)
+
+# f-string
+# f-strings are evaluated at runtime
+f"Hello, {name}. You are {age}."
+f"{2 * 37}"
+f"{name.lower()} is funny."
+message = f"Hi {name}. " \
+...       f"You are a {profession}. " \
+...       f"You were in {affiliation}."
+
 ```
 
 ---
@@ -363,14 +393,61 @@ If you have a Python script named math.py in the same folder as your current scr
 
 ---
 
+locals()的作用是：返回一个字典——这个字典包含该语句所在代码块的局部变量和局部模块。更为准确的说，返回local namespace中的所有东西。
+
+globals()具有相同的作用：返回global namespace中的所有东西（全局变量，全局模块）。
+```python
+print locals()
+print globals()
+```
+
+---
+
+Super Function
+
+Inheritance public properties and methods without calling \__init\__
+```python
+class Vehicle: #defining the parent class
+  def display(self): #defining diplay method in the parent class
+    print("I am from the Vehicle Class")
+
+class Car(Vehicle): #defining the child class
+  #defining diplay method in the parent class
+  def display(self): 
+    super().display()
+    print("I am from the Car Class")
+
+obj1 = Car() #creating a car object
+obj1.display() #calling the Car class method printOut()
+
+```
+Using with Initializers 
 ``` python
-class P(object):
-    def __init__(self):
-        print('calling P\'s constructor')
-class C(P):
-    def __init__(self):
-        super(C,self).__init__() # P.__init__()
-        print('calling C\'s constructor')
+class Vehicle:
+  def __init__(self, make, color, model):
+    self.make = make
+    self.color = color
+    self.model = model
+  
+  def printDetails(self):
+    print("Manufacturer:" , self.make)
+    print("Color:" , self.color)
+    print("Model:" , self.model)
+
+class Car(Vehicle):
+  def __init__(self, make, color, model, doors):
+    # Vehicle.__init__(self, make, color, model)
+    super().__init__(make, color, model)
+    self.doors = doors
+        
+  def printCarDetails(self): 
+    # self.printDetails()   
+    super().printDetails()
+    print("Name:",self.doors)
+    
+
+obj1 = Car("Suzuki","Grey","2015",4) 
+obj1.printCarDetails()  
 ```
 
 ---
@@ -390,6 +467,37 @@ Python通过编码规范而不是语言机制来完成封装，具体而言，Py
 进行名称转写则能有效避免子类中方法的命名冲突
 定义子类的时候，经常会调用父类的__init__()方法，假如父类的__init__()方法调用了父类的非公开函数__initialize()，当我们在子类中也需要__initialize()函数时会造成父类__init__()的异常行为，而名称转写避免了这一冲突，父类的__init__()实际上调用的是_父类名__initialize()。
 
+Use one leading underscore only for non-public methods and instance variables.
+
+_single_leading_underscore: weak "internal use" indicator. E.g. from M import * does not import objects whose name starts with an underscore.
+
+To avoid name clashes with subclasses, use two leading underscores to invoke Python's name mangling rules.
+
+It should not be used to create a private method. It should be used to avoid your method being overridden by a subclass or accessed accidentally.
+
+Generally, double leading underscores should be used only to avoid name conflicts with attributes in classes designed to be subclassed.
+
+``` python
+class A(object):
+    def __test(self):
+        print "I'm a test method in class A"
+
+    def test(self):
+        self.__test()
+
+a = A()
+a.test()
+# a.__test() # This fails with an AttributeError
+a._A__test() # Works! We can access the mangled name directly!
+
+class B(A):
+    def __test(self):
+        print "I'm test method in class B"
+
+b = B()
+b.test()# A.test() will not call B.__test() methods
+
+```
 
 ___
 
@@ -542,7 +650,102 @@ A.static_foo()
 A.class_foo()  
 
 ```
+
 ---
+
+if you want to change a class attribute, you have to do it with the notation ClassName.AttributeName. Otherwise, you will create a new instance variable. 
+
+Python's class attributes and object attributes are stored in separate dictionaries__dict__
+
+``` python
+class A:
+    foo = 'b'
+    bar = []
+
+a = A()
+b = A()
+a.__dict__ # {}
+
+# add instance variable
+a.foo = 'c'
+A.foo # 'b'
+a.foo # 'c'
+a.__dict__ # {'foo': 'c'}
+
+# modify class variable from instance
+a.bar.append(1)
+b.bar # [1]
+a.bar # [1]
+a.__dict__ # {'foo': 'c'}
+b.__dict__ # {}
+
+# overwrite class variable by instance variable
+b.bar = 1
+b.__dict__ #{'bar': 1}
+
+```
+The proper use of \__slots__ is to save space in objects. Instead of having a dynamic dict that allows adding attributes to objects at anytime, there is a static structure which does not allow additions after creation. [This use of \__slots__ eliminates the overhead of one dict for every object.] While this is sometimes a useful optimization, it would be completely unnecessary if the Python interpreter was dynamic enough so that it would only require the dict when there actually were additions to the object.
+
+```python
+class A:
+    __slots__ = ['x', 'y'] 
+a = A()
+a.x = 1
+a.z = 2 # AttributeError
+a.__dict__ # AttributeError
+
+```
+
+---
+
+\__all__ lets humans know the "public" features of a module(.py)
+only affect from xxx import *
+If \__all__ is not defined, the set of public names includes all names found in the module's namespace which do not begin with an underscore character ("_"). \__all__ should contain the entire public API. 
+It is intended to avoid accidentally exporting items that are not part of the API
+``` python
+""" cheese.py - an example module """
+
+__all__ = ['swiss', 'cheddar']
+
+swiss = 4.99
+cheddar = 3.99
+gouda = 10.99
+
+```
+
+``` python
+>>> from cheese import *
+>>> swiss, cheddar
+(4.99, 3.99)
+>>> gouda
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'gouda' is not defined
+```
+
+``` python
+>>> import cheese
+>>> cheese.swiss, cheese.cheddar, cheese.gouda
+(4.99, 3.99, 10.99)
+```
+
+if a package’s \__init__.py code defines a list named \__all__, it is taken to be the list of module names that should be imported when from package import * is encountered.
+``` python
+""" sound/effects/__init__.py """
+__all__ = ["echo", "surround", "reverse"]
+```
+
+``` python
+from sound.effects import * 
+# import the three named submodules of the sound package.
+```
+
+not affect from package import specific_submodule
+
+
+
+---
+
 When a Python interpreter reads a source file it executes all its code.
 This name check makes sure this code block is only executed when this module is the main program.
 
@@ -564,6 +767,7 @@ b = a                       #赋值，传对象的引用
 c = copy.copy(a)            #对象拷贝，浅拷贝
 d = copy.deepcopy(a)        #对象拷贝，深拷贝
  
+a[0] = 0 
 a.append(5)                 #修改对象a
 a[4].append('c')            #修改对象a中的['a', 'b']数组对象
  
@@ -593,7 +797,7 @@ class Person():
 class Person:
     pass
 ```
-三种写法并无区别，推荐第一种
+三种写法并无区别
 
 ---
 
@@ -643,4 +847,189 @@ for i in range(1,100):
         break
     if exitFlag:
         break
+```
+
+---
+
+Overloading Operator 
+```python
+class com: 
+  def __init__(self, real = 0, imag = 0):
+    self.real = real
+    self.imag = imag
+    
+  def __add__(self, other): #overloading the `+` operator
+    temp = com(self.real + other.real, self.imag+other.imag)
+    return temp
+    
+  def __sub__(self,other): #overloading the `-` operator
+    temp = com(self.real - other.real, self.imag - other.imag)
+    return temp
+
+obj1 = com(3, 7)
+obj2 = com(2, 5)
+
+obj3 = obj1 + obj2
+obj4 = obj1 - obj2
+
+```
+
+---
+
+Duck Typing
+
+To achieve polymorphism without inheritance
+开闭原则：
+Software entities should be open for extension, but closed for modification.
+在设计一个模块的时候，应当使这个模块可以在不被修改的前提下被扩展。
+
+
+```python
+class Dog:
+  def Speak(self):
+    print("Woof woof")
+
+class Cat:
+  def Speak(self):
+    print("Meow meow") 
+
+class AnimalSound:
+  def Sound(self,animal):
+    animal.Speak()
+# animal object does not matter in the definition of the Sound method 
+# as long as it has the associated behavior speak()
+
+sound = AnimalSound()
+dog = Dog()
+cat = Cat()
+
+sound.Sound(dog)
+sound.Sound(cat) 
+
+```
+
+``` python
+class Duck:
+    def fly(self):
+        print("Duck flying")
+
+class Airplane:
+    def fly(self):
+        print("Airplane flying")
+
+class Whale:
+    def swim(self):
+        print("Whale swimming")
+
+for animal in Duck(), Airplane(), Whale():
+    animal.fly()
+
+# Duck flying
+# Airplane flying
+# AttributeError: 'Whale' object has no attribute 'fly'
+
+```
+
+Abstract base classes define a set of methods and properties that a class must implement in order to be considered a duck-type instance of that class.
+
+Abstract methods must be defined in child classes for proper implementation of inheritance.
+
+``` python
+from abc import ABC, abstractmethod
+
+class Shape(ABC): #Shape is a child class of ABC
+  @abstractmethod
+  def area(self):
+    pass
+  
+  @abstractmethod
+  def perimeter(self):
+    pass
+
+class Square(Shape):
+  def __init__(self, length):
+    self.length = length
+
+shape=Shape()
+# this will code will not compile 
+# since Shape has abstract methods without method definitions in it
+
+square = Square(4)
+# this will code will not compile 
+# since abstarct methods have not been defined in the child class, Square
+
+```
+
+---
+
+Aggregation
+```python
+
+class Country:
+  def __init__(self, name = None, population = 0):
+    self.name = name
+    self.population = population
+  
+  def printDetails(self):
+    print ("Country Name:",  self.name)
+    print ("Country Population",  self.population)
+  
+class Person:
+  def __init__(self, name, country):
+    self.name = name
+    self.country = country
+  
+  def printDetails(self):
+    print("Person Name:", self.name)
+    self.country.printDetails()
+
+c = Country("Wales", 1500)
+p = Person("Joe", c)
+p.printDetails()
+
+del c 
+print("")
+p.printDetails()
+
+```
+
+
+Composition
+```python
+class Engine:
+  def __init__(self,capacity=0):
+    self.capacity=capacity
+  
+  def printDetails(self):
+    print("Engine Details:",self.capacity)
+
+class Tires:
+  def __init__(self,tires=0):
+    self.tires=tires
+  
+  def printDetails(self):
+    print("Number of tires:",self.tires)
+
+class Doors:
+  def __init__(self,doors=0):
+    self.doors=doors
+  
+  def printDetails(self):
+    print("Number of doors:",self.doors)
+
+class Car:
+  def __init__(self,eng,tr,dr,color):
+    self.eObj=Engine(eng)
+    self.tObj=Tires(tr)
+    self.dObj=Doors(dr)
+    self.color=color
+  
+  def printDetails(self):
+    self.eObj.printDetails()
+    self.tObj.printDetails()
+    self.dObj.printDetails()
+    print("Car color:",self.color)
+
+car=Car(1600,4,2,"Grey")
+car.printDetails()
 ```
