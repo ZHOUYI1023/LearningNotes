@@ -86,14 +86,9 @@ int a =0;//定义一个全局变量a,并给初值，
  2.自定义结构体类型定义成全局变量
 结构体的定义放在*.h文件中，这样一来，无论你incude无数次，内存都不会被占用的。而且这样还有个好处，在别的文件中可以include这个*.h文件，这样，在这个文件中，编译器就可以识别你的自定义类型了
 
- 假如我在global.h中定义了
- ```c
-typedef struct _POSITION
-{
-        int x;
-        int y;
-}POSITION;
-```
+假如我在global.h中定义了struct POSITION
+
+
 那么我可以在一个global.c文件中实现全局变量的定义，不过要include那个*.h文件，比如
 ```c
 /* ***global.c ******* */
@@ -441,9 +436,124 @@ char *cp = "abcdefg";
 
 ---
 
-## Dynamic Memory Allocation
-https://www.programiz.com/c-programming/c-dynamic-memory-allocation
+指针加1，结果是对该指针增加1个储存单位。
 
+``` c
+int main(void)
+{
+    int a[5]={1,2,3,4,5};
+    int *ptr=(int *)(&a+1);
+    printf(“%d,%d”,*(a+1),*(ptr-1));
+    return 0;
+}
+// a是数组首地址， &a+1 是加一个a数组的偏移
+// a是a[0]的地址，*(a+1）就是a[1]，*(ptr-1)就是a[4]，执行结果是2，5。
+```
+
+
+---
+
+## Dynamic Memory Allocation
+
+### malloc
+The malloc() function reserves a block of memory of the specified number of bytes. And, it returns a pointer of void which can be casted into pointers of any form.
+``` c
+ptr = (int*) malloc(100 * sizeof(float));
+```
+
+对于应用层程序员来说，是连续的，程序员看到的是虚拟地址空间。如果到物理层，地址就不一定连续了，我们平时在开发程序的时候，都是在虚拟地址空间操作，故，此时我们malloc分配的内存是连续，所以*（a+1）与a[1]在我们使用的时候总是相等的。
+
+``` c
+// Program to calculate the sum of n numbers entered by the user
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    int n, i, *ptr, sum = 0;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    ptr = (int*) malloc(n * sizeof(int));
+ 
+    // if memory cannot be allocated
+    if(ptr == NULL)                     
+    {
+        printf("Error! memory not allocated.");
+        exit(0);
+    }
+    printf("Enter elements: ");
+    for(i = 0; i < n; ++i)
+    {
+        scanf("%d", ptr + i);
+        sum += *(ptr + i);
+    }
+    printf("Sum = %d", sum);
+```
+
+### calloc
+The name "calloc" stands for contiguous allocation.
+
+The malloc() function allocates memory and leaves the memory uninitialized. Whereas, the calloc() function allocates memory and initializes all bits to zero.
+``` c
+ptr = (float*) calloc(25, sizeof(float));
+```
+``` c
+// Program to calculate the sum of n numbers entered by the user
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    int n, i, *ptr, sum = 0;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    ptr = (int*) calloc(n, sizeof(int));
+    if(ptr == NULL)
+    {
+        printf("Error! memory not allocated.");
+        exit(0);
+    }
+    printf("Enter elements: ");
+    for(i = 0; i < n; ++i)
+    {
+        scanf("%d", ptr + i);
+        sum += *(ptr + i);
+    }
+    printf("Sum = %d", sum);
+    free(ptr);
+    return 0;
+}
+```
+
+### realloc
+If the dynamically allocated memory is insufficient or more than required, you can change the size of previously allocated memory using the realloc() function.
+
+``` c
+ptr = realloc(ptr, new_size);
+```
+
+``` c
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    int *ptr, i , n1, n2;
+    printf("Enter size: ");
+    scanf("%d", &n1);
+    ptr = (int*) malloc(n1 * sizeof(int));
+    printf("Addresses of previously allocated memory: ");
+    for(i = 0; i < n1; ++i)
+         printf("%u\n",ptr + i);
+    printf("\nEnter the new size: ");
+    scanf("%d", &n2);
+    // rellocating the memory
+    ptr = realloc(ptr, n2 * sizeof(int));
+    printf("Addresses of newly allocated memory: ");
+    for(i = 0; i < n2; ++i)
+         printf("%u\n", ptr + i);
+  
+    free(ptr);
+    return 0;
+}
+```
 
 ---
 
@@ -629,3 +739,8 @@ printf("%d", num);
 
 ```
 
+清零
+```c
+int a[5]
+memset(a,0,sizeof(a))
+``` 
