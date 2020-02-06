@@ -160,4 +160,12 @@ classdef WaypointClass
         end
     end
 end
+```
 
+## 按列存储
+matlab是按列存储的，而C/C++和python是按行存储的
+```matlab
+A=[1,2,3;4,5,6]
+reshape(A,3,2)
+% A = [1,5;4,3;2,6]
+```

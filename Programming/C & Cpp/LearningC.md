@@ -44,6 +44,25 @@ In C++, there are additional rules, for example, when it's passed by reference.
 
 ---
 
+A stack is a last-in, first-out (LIFO) structure. The last item pushed onto the stack will be the first item popped off. If you put a new plate on top of the stack, the first plate removed from the stack will be the plate you just pushed on last. Last on, first off. As items are pushed onto a stack, the stack grows larger -- as items are popped off, the stack grows smaller.
+
+For example, here’s a short sequence showing how pushing and popping on a stack works:
+
+Stack: empty
+Push 1
+Stack: 1
+Push 2
+Stack: 1 2
+Push 3
+Stack: 1 2 3
+Pop
+Stack: 1 2
+Pop
+Stack: 1
+
+
+---
+
 ## register
 不能对它应用一元的 '&' 运算符（因为它没有内存位置）
 Unless you are working on embedded systems where you know how to optimize code for the given application, there is no use of register variables.
@@ -744,3 +763,89 @@ printf("%d", num);
 int a[5]
 memset(a,0,sizeof(a))
 ``` 
+
+---
+
+We can use an array of pointers, where each pointer is a pointer to the head of a character array (in other words a string), to store an array of strings.
+``` c
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+  char *provinces[] = { "British Columbia", "Alberta", "Saskatchewan", 
+                        "Manitoba", "Ontario", "Quebec", "New Brunswick",
+                        "Nova Scotia", "Prince Edward Island", "Newfoundland",
+                        "Yukon", "Northwest Territories", "Nunavut" };
+  int i;
+  for (i=0; i<13; i++) {
+    printf("provinces[%d] = %s\n", i, provinces[i]);
+  }
+  return 0;
+}
+```
+
+---
+
+extern "C"
+
+
+extern "C"是告诉C++编译器以C Linkage方式编译，也就是抑制C++的name mangling机制。
+
+由于C、C++编译器对函数的编译处理是不完全相同的，尤其对于C++来说，支持函数的重载，编译后的函数一般是以函数名和形参类型来命名的。
+
+例如函数void fun(int, int)，编译后的可能是_fun_int_int(不同编译器可能不同，但都采用了类似的机制，用函数名和参数类型来命名编译后的函数名)；而C语言没有类似的重载机制，一般是利用函数名来指明编译后的函数名的，对应上面的函数可能会是_fun这样的名字。
+
+```c
+#ifdef __cplusplus /* 如果采用了C++，如下代码使用C编译器 */
+    extern "C" { /* 如果没有采用C++，顺序预编译 */
+#endif
+/* 采用C编译器编译的C语言代码段 */
+#ifdef __cplusplus /* 结束使用C编译器 */
+    }
+#endif
+
+```
+在C++中引用C语言中的函数和变量
+``` c
+  /* c语言头文件：cExample.h */ 
+  #ifndef C_EXAMPLE_H 
+  #define C_EXAMPLE_H 
+  extern int add(int x, int y); 
+  #endif
+
+  /* c语言的实现文件：cExample.c */ 
+  #include "cExample.h" 
+  int add(int x, int y) 
+  { 
+    return x + y; 
+  }
+
+  /* c++实现文件，调用add：cppFile.cpp */ 
+  extern "C" 
+  { 
+    #include "cExample.h"; 
+  } 
+  int main() 
+  { 
+    add(2, 3); 
+    return 0; 
+  } 
+
+```
+C中引用C++语言中的函数或者变量时，C++的头文件需要加上extern “C”，但是C语言中不能直接引用声明了extern “C”的该头文件，应该仅在C中将C++中定义的extern “C”函数声明为extern类型。
+``` c
+  /* c++头文件cppExample.h */ 
+  #ifndef CPP_EXAMPLE_H 
+  #define CPP_EXAMPLE_H 
+  extern "C" int add(int x, int y); 
+  #endif
+
+  /* c实现文件cFile.c */ 
+  extern int add(int x, int y); 
+  int main() 
+  { 
+    add(2, 3); 
+    return 0; 
+  }
+
+```

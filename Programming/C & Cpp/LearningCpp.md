@@ -183,3 +183,411 @@ int &*ptr = &a;// error
 int a = 20;
 int *&b = &a;// ok
 ```
+
+---
+
+switch 
+```cpp
+// when enumerations are used in a switch statement, many compilers
+// issue warnings if one of the enumerators is not handled
+// need to (1) add the default or (2) list each value
+enum color {RED, GREEN, BLUE};
+switch(RED) {
+    case RED:   std::cout << "red\n"; break;
+    case GREEN: std::cout << "green\n"; break;
+    case BLUE:  std::cout << "blue\n"; break;
+}
+```
+
+---
+
+虚函数：
+在无需了解具体子类类型的情况下，通过基类指针调用子类的实现。
+
+Pure Virtual Member Functions：
+* The =0 syntax is simply how we tell the compiler that a virtual function will be pure
+* If a class doesn’t override the pure virtual function, it becomes an abstract class itself, and you can’t instantiate objects from it
+
+```cpp
+#include <iostream>
+using namespace std;
+
+// A simple Shape interface which provides a method to get the Shape's area
+class Shape {
+  public:
+  //virtual float getArea(){}
+  virtual float getArea() = 0;
+};
+// A Rectangle is a Shape with a specific width and height
+class Rectangle : public Shape {   // derived form Shape class
+  private:
+  float width;
+  float height;
+
+  public:
+  Rectangle(float wid, float heigh) {
+    width = wid;
+    height = heigh;
+  }
+  float getArea(){
+    return width * height; 
+  }
+};
+
+// A Circle is a Shape with a specific radius
+class Circle : public Shape {
+  private:
+  float radius;
+
+  public:
+  Circle(float rad){
+    radius = rad; 
+  }
+  float getArea(){
+    return 3.14159f * radius * radius; 
+  }
+};
+
+// A Square is a Shape with a specific length
+class Square : public Shape {
+  private:
+  float length;
+
+  public:
+  Square(float len){
+    length = len;
+  }
+  float getArea(){
+    return length * length; 
+  }
+};
+
+int main() {
+  Shape * shape[3];   // Referencing Shape class to Rectangle object
+
+  Rectangle r(2, 6);    // Creating Rectangle object
+  shape[0] = &r;   // Referencing Shape class to Rectangle object
+  
+  Circle c(5);    // Creating Circle object
+  shape[1] = &c;   // Referencing Shape class to Circle object
+
+  Square s(10);   // Creating Square object
+  shape[2] = &s;     // Referencing Shape class to Circle object
+
+  for(int i=0; i<3; i++)
+    cout << shape[i]->getArea() << endl; 
+}
+```
+
+---
+
+Part-of: Composition
+```cpp
+#include <iostream>
+using namespace std;
+
+class Engine{
+  int capacity;
+  
+  public:
+  Engine(){
+    capacity = 0;
+  }
+  
+  Engine(int cap) {
+    capacity = cap;
+  }
+  
+  void Engine_details() {
+    cout << "Engine details: " << capacity << endl;
+  }
+};
+
+class Tires{
+  int No_of_tires;
+  
+  public:
+  Tires(){
+    No_of_tires = 0;
+  }
+  
+  Tires(int nt) {
+    No_of_tires = nt;
+  }
+  
+  void Tire_details() {
+    cout << "Number of tyres: " << No_of_tires << endl;
+  }
+};
+
+class Doors{
+  int No_of_doors;
+  
+  public:
+  Doors(){
+    No_of_doors = 0;
+  }
+  
+  Doors(int nod) {
+    No_of_doors = nod;
+  }
+  
+  void Door_details() {
+    cout << "Number of Doors: " << No_of_doors << endl;
+  }
+};
+
+class Car{
+  Engine Eobj;
+  Tires Tobj;
+  Doors Dobj;
+  string color;
+  
+  public:
+  Car(Engine eng, Tires tr, int dr, string col)
+    : Eobj(eng), Tobj(tr), Dobj(dr){
+    
+    color = col;    
+  }
+  
+  void Car_detail(){
+    Eobj.Engine_details();
+    Tobj.Tire_details();
+    Dobj.Door_details();
+    cout << "Car color: " << color << endl;
+  }
+};
+
+int main(){
+  Engine Eobj(1600);
+  Tires Tobj(4);
+  Doors Dobj(4);
+  Car Cobj(Eobj, Tobj, 4, "Black");
+  //When Car dies, so does tire, engine and doors too.
+  Cobj.Car_detail();
+}
+
+```
+
+ Has-A model: Aggregation
+
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Country{
+  string name;
+  int population;
+
+  public:
+  Country(string n, int p){
+    name = n;
+    population = p;
+  }
+  string getName(){
+    return name;
+  }
+};
+
+class Person {
+  string name;
+  Country* country; // A pointer to a Country object
+
+  public: 
+  Person(string n, Country* c){
+    name = n;
+    country = c;
+  }
+
+  string printDetails(){
+    cout << "Name: " << name << endl;
+    cout << "Country: " << country->getName() << endl;
+  }
+};
+
+int main() {
+  Country* country = new Country("Utopia", 1);
+  {
+    Person user("Darth Vader", country);
+    user.printDetails();
+  }
+  // The user object's lifetime is over
+  //the country object lives on even after the user goes out of scope
+  cout << country->getName() << endl; // The country object still exists!
+}
+
+```
+
+Association
+A friend function is an ==independent function== which has access to the variables and methods of its befriended class (including private).
+
+```cpp
+class Teacher;  // Making this friend of a student class
+ 
+class Student
+{
+private:
+	string Std_name;
+	vector<Teacher *> tr;
+	void addTeacher(Teacher * teach);
+ 
+public:
+	Student(string name) {
+		 Std_name = name;
+	}
+ 
+	string getName() const { 
+    return Std_name; 
+  }
+ 
+  friend ostream& operator<<(ostream &out, const Student &std);
+  
+  // Making teacher friend of this class to access addTeacher function
+	friend class Teacher;
+};
+ 
+class Teacher {
+private:
+	string tr_name;
+	vector<Student *> stdnt;
+ 
+public:
+	Teacher (string name) {
+		tr_name = name;
+	}
+ 
+	void addStudent(Student *st)
+	{
+		// Teacher will add this student to course
+		stdnt.push_back(st);
+		
+		// Student will also add this teacher for connection
+		st->addTeacher(this);
+	}
+  
+  friend ostream& operator<<(ostream &out, const Teacher &tchr);
+ 
+	string getName() const {return tr_name;}
+};
+ 
+void Student::addTeacher(Teacher *teach){
+	tr.push_back(teach);
+}
+ 
+ostream& operator<<(ostream &out, const Student &std) {
+	int length = std.tr.size();
+	if (length == 0)
+	{
+		out << std.getName() << " is not registered in any course";
+		return out;
+	}
+ 
+	out << std.Std_name << " is taught by: ";
+	for (int count = 0; count < length; ++count)
+		out << std.tr[count]->getName() << ' ';
+ 
+	return out;
+}
+
+
+ostream& operator<<(ostream &out, const Teacher &tchr)
+	{
+		int length = tchr.stdnt.size();
+		if (length == 0)
+		{
+			out << tchr.tr_name << " is not teaching any class";
+			return out;
+		}
+ 
+		out << tchr.tr_name << " is teaching: ";
+		for (int count = 0; count < length; ++count)
+			 out << tchr.stdnt[count]->getName() << ' ';
+ 
+		return out;
+	}
+ 
+
+int main()
+{
+	// Creating a Students outside the scope of the Teacher
+	Student *s1 = new Student("John");
+	Student *s2 = new Student("Stacy");
+	Student *s3 = new Student("Sarah");
+ 
+	Teacher *t1 = new Teacher("Henry");
+	Teacher *t2 = new Teacher("Neil");
+  Teacher *t3 = new Teacher("Steve");
+
+	t1->addStudent(s1);
+	t2->addStudent(s1);
+	t1->addStudent(s3);
+ 
+	cout << *t1 << endl;
+	cout << *t2 << endl;
+  cout << *t3 << endl;
+	cout << *s1 << endl;
+	cout << *s2 << endl;
+	cout << *s3 << endl;
+}
+```
+
+---
+
+```cpp
+template <class T>
+class Score
+{
+private:
+    T value;
+public:
+    static int counter;
+    Score()  {counter++;}
+};
+ 
+template<class T>
+int Score<T>::counter = 0;
+ 
+int main()
+{
+    Score<int> x;
+    Score<int> y;
+    Score<double> z;
+    cout << Score<int>::counter<< endl;
+    cout << Score<double>::counter<< endl;
+    return 0;
+}
+```
+
+1、const：类型常量与指针常量
+
+const int 等价于 int const 但不等价于int *const；前两个是类型常量，后一个是指针常量。
+
+2、模板
+
+函数模板：
+
+template <class type> ret-type func-name(parameter list){ // 函数的主体}
+
+类模板：
+
+template <class type> class class-name {...}
+
+模板用于自由类型编程，目的是通用算法与具体类型无关。
+
+3、注释小技巧
+
+//*
+
+注释内容
+
+//*/
+
+通常注释内容由/**/包括起来。在*/前增加两个/后，不改变注释；此后，在/*前增加一个/变为//*，此时原注释首行与尾行都变为单行注释，如此即可方便打开注释内容进行重用。如果要恢复原来的注释，可再次删除首行中的一个/，即又可快速恢复原注释。
+
+4、inline
+
+内联是以代码膨胀（复制）为代价，仅仅省去了函数调用的开销，从而提高函数的
+
+执行效率。
+

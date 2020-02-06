@@ -784,6 +784,25 @@ print( 'd = ', d )
 ('d = ', [1, 2, 3, 4, ['a', 'b']])
 ```
 
+``` python
+import copy
+z = 1
+def adder(x):
+    global z
+    q = copy.copy(z)
+    def wrapper(y):
+        return x + y + q
+    return wrapper
+
+t1 = adder(1)
+print(t1(1))
+# 3
+z = 3
+t2 = adder(1)
+print(t1(1), t2(1))
+# 3 5
+```
+
 ---
 
 * Python 2.x中默认都是经典类，只有显式继承了object才是新式类
@@ -798,6 +817,38 @@ class Person:
     pass
 ```
 三种写法并无区别
+
+
+```python
+# 旧式类
+>>> class Foo:
+...     pass
+...
+>>> x = Foo()
+>>> x.__class__
+<class __main__.Foo at 0x000000000535CC48>
+>>> type(x)
+<type 'instance'>
+```
+
+In Python 3 it is reasonable to refer to an object’s type and its class interchangeably.
+``` python
+# 新式类
+>>> n = 5
+>>> d = { 'x' : 1, 'y' : 2 }
+
+>>> class Foo:
+...     pass
+...
+>>> x = Foo()
+
+>>> for obj in (n, d, x):
+...     print(type(obj) is obj.__class__)
+...
+True
+True
+True
+```
 
 ---
 
@@ -824,6 +875,27 @@ fun.save()
 ```
 经典类的答案： This is from A
 新式类的答案： This is from C
+
+---
+
+Remember that, in Python, everything is an object. Classes are objects as well. In general, the type of any new-style class is type.
+```python
+
+>>> for t in int, float, dict, list, tuple:
+...     print(type(t))
+...
+<class 'type'>
+<class 'type'>
+<class 'type'>
+<class 'type'>
+<class 'type'>
+
+# type is a metaclass, of which classes are instances. 
+>>> type(type)
+<class 'type'>
+
+```
+
 
 ---
 
@@ -1032,4 +1104,116 @@ class Car:
 
 car=Car(1600,4,2,"Grey")
 car.printDetails()
+```
+
+---
+
+python中的文件都会生成pyc文件，包括模块也是这样，所以调用模块的时候，实际上会调用模块.pyc文件；在这个前提下，如果将文件名命名成跟模块名一样，在同一目录下就会生成一个跟模块名一样的pyc文件，系统就直接调用这个文件了，所以就会出现模块中属性错误，如AttributeError: 'module' object has no attribute 'Differ'
+
+
+---
+
+``` python
+# file handling 
+
+# 1) without using with statement 
+# An exception during the file.write() call in the first implementation can prevent the file from closing properly
+file = open('file_path', 'w') 
+file.write('hello world !') 
+file.close() 
+
+# 2) without using with statement 
+file = open('file_path', 'w') 
+try: 
+	file.write('hello world') 
+finally: 
+	file.close() 
+
+# using with statement 
+# there is no need to call file.close() when using with statement.
+with open('file_path', 'w') as file: 
+	file.write('hello world !') 
+
+```
+ The name xfile here is used to refer to the file descriptor returned by the \__enter__() method.
+As soon as the code inside the with block is executed, the \__exit__() method is called.
+``` python
+# a simple file writer object 
+
+class MessageWriter(object): 
+	def __init__(self, file_name): 
+		self.file_name = file_name 
+	
+	def __enter__(self): 
+		self.file = open(self.file_name, 'w') 
+		return self.file
+
+	def __exit__(self): 
+		self.file.close() 
+
+# using with statement with MessageWriter 
+
+with MessageWriter('my_file.txt') as xfile: 
+	xfile.write('hello world') 
+
+```
+
+``` python
+from contextlib import contextmanager 
+  
+class MessageWriter(object): 
+    def __init__(self, filename): 
+        self.file_name = filename 
+  
+    @contextmanager
+    def open_file(self): 
+        try: 
+            file = open(self.file_name, 'w') 
+            yield file
+        finally: 
+            file.close() 
+  
+# usage 
+message_writer = MessageWriter('hello.txt') 
+with message_writer.open_file() as my_file: 
+    my_file.write('hello world') 
+
+```
+
+---
+
+``` python
+import json
+
+data = {}
+data['people'] = []
+data['people'].append({
+    'name': 'Scott',
+    'website': 'stackabuse.com',
+    'from': 'Nebraska'
+})
+data['people'].append({
+    'name': 'Larry',
+    'website': 'google.com',
+    'from': 'Michigan'
+})
+data['people'].append({
+    'name': 'Tim',
+    'website': 'apple.com',
+    'from': 'Alabama'
+})
+
+with open('data.txt', 'w') as outfile:
+    json.dump(data, outfile)
+
+with open('data.txt') as json_file:
+    data = json.load(json_file)
+    for p in data['people']:
+        print('Name: ' + p['name'])
+        print('Website: ' + p['website'])
+        print('From: ' + p['from'])
+        print('')
+
+json.dumps(data, sort_keys=True, indent=4)
+    
 ```
